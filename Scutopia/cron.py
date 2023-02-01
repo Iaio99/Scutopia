@@ -2,15 +2,18 @@ import json
 import requests
 from datetime import date
 from os.path import dirname
-from requests.auth import HTTPBasicAuth
 from urllib.parse import quote_plus as url_encode
 
 from django_cron import CronJobBase, Schedule
 from django.db.utils import IntegrityError
 
 from . import cursor
+from .models import Professors
+from .serializers import PubblicationsSerializer, ProfessorsSerializer
 
-localhost = "https://localhost:443/"
+
+localhost = "http://localhost:8000/"
+
 
 class MaximumRequestsError(Exception):
     "Reached the maximum queries that can be aksed to Scopus"
@@ -26,17 +29,6 @@ def get_pubblications(apikey: str,  author_id: str, index = "scopus", view = "CO
     
     match r.status_code:
         case 200:
-#            client = requests.session()
-#            client.get(localhost+"accounts/login/")
-#            csrftoken = client.cookies["csrftoken"]
-#            login = {
-#                "username": "",
-#                "password": "",
-#                "csrfmiddlewaretoken": csrftoken,
-#            }
-#            
-#            r1 = client.post(localhost+"accounts/login/", data=login)
-
             api_response = json.loads(r.text)
             result_set = api_response["search-results"]["entry"]
 
@@ -54,8 +46,6 @@ def get_pubblications(apikey: str,  author_id: str, index = "scopus", view = "CO
             for pubblication in result_set:
                 save_pubblications(pubblication)
                 save_authorship(pubblication["eid"], pubblication["author"])
-
-#            client.close()
 
         case 400:
             raise Exception("Invalid Request")
@@ -77,7 +67,7 @@ def get_pubblications(apikey: str,  author_id: str, index = "scopus", view = "CO
 def save_pubblications(pubblication):
     while True:
         try:
-            requests.post(localhost+"pubblications/", json={
+            pubblications_serializer = PubblicationsSerializer(data={
                 "eid": pubblication["eid"], 
                 "title": pubblication["dc:title"],
                 "pubblication_date": pubblication["prism:coverDate"],
@@ -86,9 +76,11 @@ def save_pubblications(pubblication):
                 "page_range": pubblication["prism:pageRange"],
                 "doi": pubblication["prism:doi"],
                 "download_date": str(date.today()),
-                "scopus_id": pubblication["dc:identifier"].replace("SCOPUS_ID:", "")},
-                cert=(dirname(__file__)+"/../cert.pem", dirname(__file__)+"/../key.pem")
-            )
+                "scopus_id": pubblication["dc:identifier"].replace("SCOPUS_ID:", "")})
+
+            if pubblications_serializer.is_valid():
+                pubblications_serializer.save()
+
             break
         except KeyError as e:
             new_data = {str(e).replace("'",""): ""}
@@ -104,14 +96,15 @@ def save_authorship(eid: str, authors: list):
 
 
 class ScopusScraper(CronJobBase):
-    RUN_AT_TIMES = ['1:15']
+    RUN_AT_TIMES = ['18:16']
     RETRY_AFTER_FAILURE_MINS = 1
     schedule = Schedule(run_at_times=RUN_AT_TIMES)
     code = 'Scutopia.ScopusScraper'
 
     def do(self):
-        r = requests.get(url = localhost+"authors")
-        authors_id = [x["scopus_id"] for x in r.json()]
+        professors = Professors.objects.all()
+        professors_serializer = ProfessorsSerializer(professors, many=True)
+        authors_id = professors_serializer.data
 
         with open(dirname(__file__)+'/../keys.json') as fp:
             keys = json.load(fp)
@@ -119,6 +112,6 @@ class ScopusScraper(CronJobBase):
 
         try:
             for author in authors_id:
-                get_pubblications(APIKEY, author)
+                get_pubblications(APIKEY, author["scopus_id"])
         except MaximumRequestsError as e:
             print(f"{str(e)}. The counter of requests will be resetted in date {str(date.fromtimestamp(reset_time))}")
