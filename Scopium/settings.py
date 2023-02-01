@@ -22,11 +22,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
+
+#SECRET_KEY = 'django-insecure-6x9!f0rgz(bg1e@kb!^=rmlk%86e(792dp_5!gunqkqy1#9epn'
+
 with open(os.path.dirname(__file__)+'/../keys.json') as fp:
     keys = json.load(fp)
     SECRET_KEY = keys["secretkey"]
-
-#SECRET_KEY = 'django-insecure-6x9!f0rgz(bg1e@kb!^=rmlk%86e(792dp_5!gunqkqy1#9epn'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -78,7 +79,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'Scopium.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
