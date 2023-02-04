@@ -6,10 +6,11 @@ from urllib.parse import quote_plus as url_encode
 
 from django_cron import CronJobBase, Schedule
 from django.db.utils import IntegrityError
+from django.db.models import Max
 
 from . import cursor
-from .models import Professors
-from .serializers import PubblicationsSerializer, ProfessorsSerializer
+from .models import Professors, Authorship
+from .serializers import ProfessorsSerializer,  PubblicationsSerializer
 
 
 localhost = "http://localhost:8000/"
@@ -19,12 +20,22 @@ class MaximumRequestsError(Exception):
     "Reached the maximum queries that can be aksed to Scopus"
 
 
+def get_last_download(author_id):
+    args = Authorship.objects.select_related("eid").filter(scopus_id = author_id)
+    download_date = args.aggregate(Max("eid__download_date"))["eid__download_date__max"]
+
+    if args.count:
+        return download_date.strftime("%Y")
+    
+    return 0
+
+
 def get_pubblications(apikey: str,  author_id: str, index = "scopus", view = "COMPLETE"):
     global reset_time
     reset_time = None
 
     url = "https://api.elsevier.com/content/search/" + index + "?query={}&view=" + view + "&apikey=" + apikey
-    url = url.format(f"AU-ID({url_encode(author_id)})")
+    url = url.format(f"AU-ID({url_encode(author_id)}) AND PUBYEAR > {get_last_download(author_id)}")
     r = requests.get(url)
     
     match r.status_code:
@@ -33,6 +44,9 @@ def get_pubblications(apikey: str,  author_id: str, index = "scopus", view = "CO
             result_set = api_response["search-results"]["entry"]
 
             num_pubblications = int(api_response['search-results']['opensearch:totalResults'])
+
+            if num_pubblications == 0:
+                return None
 
             while num_pubblications > len(result_set):
                 for e in api_response["search-results"]["link"]:
@@ -96,7 +110,7 @@ def save_authorship(eid: str, authors: list):
 
 
 class ScopusScraper(CronJobBase):
-    RUN_AT_TIMES = ['18:16']
+    RUN_AT_TIMES = ['13:18']
     RETRY_AFTER_FAILURE_MINS = 1
     schedule = Schedule(run_at_times=RUN_AT_TIMES)
     code = 'Scutopia.ScopusScraper'
@@ -109,9 +123,10 @@ class ScopusScraper(CronJobBase):
         with open(dirname(__file__)+'/../keys.json') as fp:
             keys = json.load(fp)
             APIKEY = keys["apikey"]
-
+        
         try:
             for author in authors_id:
+                get_last_download(author["scopus_id"])
                 get_pubblications(APIKEY, author["scopus_id"])
         except MaximumRequestsError as e:
             print(f"{str(e)}. The counter of requests will be resetted in date {str(date.fromtimestamp(reset_time))}")
