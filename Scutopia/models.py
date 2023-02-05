@@ -1,7 +1,5 @@
 from django.db import models
 
-# Create your models here.
-
 
 class Adu(models.Model):
     code = models.PositiveIntegerField(db_column='Code', primary_key=True)  # Field name made lowercase.

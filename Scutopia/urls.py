@@ -12,5 +12,4 @@ urlpatterns = [
     re_path(r'^ssd/', views.view_authors),
     re_path(r'^adu/', views.view_adu),
     re_path(r'^accounts/', include("django.contrib.auth.urls")),
-#    re_path(r'^login', r'^/accounts/login')
 ]

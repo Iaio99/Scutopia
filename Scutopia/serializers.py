@@ -2,13 +2,6 @@ from rest_framework import serializers
 from .models import Professors, Pubblications
 
 
-#class TestTableSerializer(serializers.ModelSerializer):
-#    class Meta:
-#        model = TestTable
-#        fields = ('nome',
-#                  'cognome')
-
-
 class ProfessorsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Professors
