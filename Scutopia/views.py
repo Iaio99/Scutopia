@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import permission_required, login_required
 from django.http.response import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -15,16 +15,14 @@ def view_departements(request) -> JsonResponse:
 
 
 @csrf_exempt
-#@login_required(login_url="/accounts/login")
-#@permission_required("Scutopia.view_pubblications")
-#@permission_required("Scutopia.add_pubblications")
+@login_required(login_url="/accounts/login")
 def view_pubblications(request):
-   if request.method == 'GET':
+   if request.method == 'GET' and request.user.has_perm("Scutopia.view_pubblications"):
       pubblications = Pubblications.objects.all()
       pubblications_serializer = PubblicationsSerializer(pubblications, many=True)
       return JsonResponse(pubblications_serializer.data, safe=False)
    
-   elif request.method == 'POST':
+   elif request.method == 'POST' and request.user.has_perm("Scutopia.add_pubblications"):
          pubblication_data=JSONParser().parse(request)
          pubblications_serializer = PubblicationsSerializer(data=pubblication_data)
 
@@ -74,4 +72,9 @@ def view_login(request):
 
    if user is not None:
       login(request, user)
+
+
+@csrf_exempt
+def view_logout(request):
+   logout(request)
 # Create your views here.
