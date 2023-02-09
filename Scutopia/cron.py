@@ -10,7 +10,7 @@ from django.db.models import Max
 
 from . import cursor
 from .models import Professors, Authorship
-from .serializers import ProfessorsSerializer,  PublicationsSerializer
+from .serializers import ProfessorsSerializer,  PubblicationsSerializer
 
 
 localhost = "http://localhost:8000/"
@@ -30,7 +30,7 @@ def get_last_download(author_id):
     return 0
 
 
-def get_publications(apikey: str,  author_id: str, index = "scopus", view = "COMPLETE"):
+def get_pubblications(apikey: str,  author_id: str, index = "scopus", view = "COMPLETE"):
     global reset_time
     reset_time = None
 
@@ -43,12 +43,12 @@ def get_publications(apikey: str,  author_id: str, index = "scopus", view = "COM
             api_response = json.loads(r.text)
             result_set = api_response["search-results"]["entry"]
 
-            num_publications = int(api_response['search-results']['opensearch:totalResults'])
+            num_pubblications = int(api_response['search-results']['opensearch:totalResults'])
 
-            if num_publications == 0:
+            if num_pubblications == 0:
                 return None
 
-            while num_publications > len(result_set):
+            while num_pubblications > len(result_set):
                 for e in api_response["search-results"]["link"]:
                     if e['@ref'] == 'next':
                         next_url = e['@href']
@@ -57,9 +57,9 @@ def get_publications(apikey: str,  author_id: str, index = "scopus", view = "COM
                 api_response = json.loads(r.text)
                 result_set += api_response["search-results"]["entry"]
 
-            for publication in result_set:
-                save_publications(publication)
-                save_authorship(publication["eid"], publication["author"])
+            for pubblication in result_set:
+                save_pubblications(pubblication)
+                save_authorship(pubblication["eid"], pubblication["author"])
 
         case 400:
             raise Exception("Invalid Request")
@@ -78,27 +78,27 @@ def get_publications(apikey: str,  author_id: str, index = "scopus", view = "COM
             raise Exception("Generic Error")  
 
 
-def save_publications(publication):
+def save_pubblications(pubblication):
     while True:
         try:
-            publications_serializer = PublicationsSerializer(data={
-                "eid": publication["eid"], 
-                "title": publication["dc:title"],
-                "publication_date": publication["prism:coverDate"],
-                "magazine": publication["prism:publicationName"],
-                "volume": publication["prism:volume"],
-                "page_range": publication["prism:pageRange"],
-                "doi": publication["prism:doi"],
+            pubblications_serializer = PubblicationsSerializer(data={
+                "eid": pubblication["eid"], 
+                "title": pubblication["dc:title"],
+                "pubblication_date": pubblication["prism:coverDate"],
+                "magazine": pubblication["prism:publicationName"],
+                "volume": pubblication["prism:volume"],
+                "page_range": pubblication["prism:pageRange"],
+                "doi": pubblication["prism:doi"],
                 "download_date": str(date.today()),
-                "scopus_id": publication["dc:identifier"].replace("SCOPUS_ID:", "")})
+                "scopus_id": pubblication["dc:identifier"].replace("SCOPUS_ID:", "")})
 
-            if publications_serializer.is_valid():
-                publications_serializer.save()
+            if pubblications_serializer.is_valid():
+                pubblications_serializer.save()
 
             break
         except KeyError as e:
             new_data = {str(e).replace("'",""): ""}
-            publication.update(new_data)
+            pubblication.update(new_data)
 
 
 def save_authorship(eid: str, authors: list):
@@ -127,6 +127,6 @@ class ScopusScraper(CronJobBase):
         try:
             for author in authors_id:
                 get_last_download(author["scopus_id"])
-                get_publications(APIKEY, author["scopus_id"])
+                get_pubblications(APIKEY, author["scopus_id"])
         except MaximumRequestsError as e:
             print(f"{str(e)}. The counter of requests will be resetted in date {str(date.fromtimestamp(reset_time))}")

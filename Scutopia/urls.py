@@ -7,7 +7,7 @@ from . import views
 
 urlpatterns = [
     re_path(r'^departements/', views.view_departements),
-    re_path(r'^publications/', views.view_publications),
+    re_path(r'^pubblications/', views.view_pubblications),
     re_path(r'^authors/', views.view_authors),
     re_path(r'^ssd/', views.view_authors),
     re_path(r'^adu/', views.view_adu),
