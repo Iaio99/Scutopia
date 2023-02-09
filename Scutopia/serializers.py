@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Professors, Pubblications
+from .models import Professors, Publications
 
 
 class ProfessorsSerializer(serializers.ModelSerializer):
@@ -15,12 +15,12 @@ class ProfessorsSerializer(serializers.ModelSerializer):
                   'role')
 
 
-class PubblicationsSerializer(serializers.ModelSerializer):
+class PublicationsSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Pubblications
+        model = Publications
         fields = ('eid',
                   'title',
-                  'pubblication_date',
+                  'publication_date',
                   'magazine',
                   'volume',
                   'page_range',
