@@ -35,22 +35,18 @@ class Professors(models.Model):
         db_table = 'Professors'
 
 
-class Pubblications(models.Model):
+class Publications(models.Model):
     eid = models.CharField(db_column='EID', primary_key=True, max_length=32)  # Field name made lowercase.
     title = models.TextField(db_column='Title', max_length=65535)  # Field name made lowercase.
-    pubblication_date = models.DateField(db_column='Pubblication Date')  # Field name made lowercase. Field renamed to remove unsuitable characters.
+    publication_date = models.DateField(db_column='Publication Date')  # Field name made lowercase. Field renamed to remove unsuitable characters.
     magazine = models.CharField(db_column='Magazine', max_length=255, blank=True, null=True)  # Field name made lowercase.
     volume = models.CharField(db_column='Volume', max_length=45, blank=True, null=True)  # Field name made lowercase.
     page_range = models.CharField(db_column='Page Range', max_length=45, blank=True, null=True)  # Field name made lowercase. Field renamed to remove unsuitable characters.
     doi = models.CharField(db_column='DOI', max_length=255, blank=True, null=True)  # Field name made lowercase.
-    download_date = models.DateField(db_column='Download Date')  # Field name made lowercase. Field renamed to remove unsuitable characters.
-#    scopus_id = models.ForeignKey(Professors, models.DO_NOTHING, db_column='Scopus ID')  # Field name made lowercase. Field renamed to remove unsuitable characters.
-    scopus_id = models.CharField(db_column='Scopus ID', max_length=32)
-
 
     class Meta:
         managed = False
-        db_table = 'Pubblications'
+        db_table = 'Publications'
 
 
 class Sc(models.Model):

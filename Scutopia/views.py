@@ -6,8 +6,8 @@ from django.http.response import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
 
-from .models import Professors, Pubblications
-from .serializers import ProfessorsSerializer, PubblicationsSerializer
+from .models import Professors, Publications
+from .serializers import ProfessorsSerializer, PublicationsSerializer
 
 
 @csrf_exempt
@@ -58,21 +58,21 @@ def view_departements(request) -> JsonResponse:
 
 @csrf_exempt
 @login_required(login_url='/accounts/login')
-def view_pubblications(request):
-   if request.method == 'GET' and request.user.has_perm('Scutopia.view_pubblications'):
-      pubblications = Pubblications.objects.all()
-      pubblications_serializer = PubblicationsSerializer(pubblications, many=True)
-      return JsonResponse(pubblications_serializer.data, safe=False)
+def view_publications(request):
+   if request.method == 'GET' and request.user.has_perm('Scutopia.view_publications'):
+      publications = Publications.objects.all()
+      publications_serializer = PublicationsSerializer(publications, many=True)
+      return JsonResponse(publications_serializer.data, safe=False)
    
-   elif request.method == 'POST' and request.user.has_perm('Scutopia.add_pubblications'):
-         pubblication_data=JSONParser().parse(request)
-         pubblications_serializer = PubblicationsSerializer(data=pubblication_data)
+   elif request.method == 'POST' and request.user.has_perm('Scutopia.add_publications'):
+         publication_data=JSONParser().parse(request)
+         publications_serializer = PublicationsSerializer(data=publication_data)
 
-         pubblication_data['pubblication_date'] = datetime.strptime(pubblication_data['pubblication_date'], '%Y-%m-%d').date()
-         pubblication_data['download_date'] = datetime.strptime(pubblication_data['download_date'], '%Y-%m-%d').date()        
+         publication_data['publication_date'] = datetime.strptime(publication_data['publication_date'], '%Y-%m-%d').date()
+         publication_data['download_date'] = datetime.strptime(publication_data['download_date'], '%Y-%m-%d').date()        
 
-         if pubblications_serializer.is_valid():
-            pubblications_serializer.save()
+         if publications_serializer.is_valid():
+            publications_serializer.save()
             return JsonResponse('Added Successfully!!', safe=False)
 
          return JsonResponse('Failed to Add.',safe=False)
