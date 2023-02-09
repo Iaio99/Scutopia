@@ -1,7 +1,5 @@
 -- MySQL dump 10.13  Distrib 8.0.32, for Win64 (x86_64)
---
--- Host: 5.75.147.58    Database: dangelo
--- ------------------------------------------------------
+---- ------------------------------------------------------
 -- Server version	8.0.32
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
