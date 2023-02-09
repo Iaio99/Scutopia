@@ -25,5 +25,4 @@ class PublicationsSerializer(serializers.ModelSerializer):
                   'volume',
                   'page_range',
                   'doi',
-                  'download_date',
-                  'scopus_id')
+                  'download_date')
