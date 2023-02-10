@@ -60,14 +60,10 @@ def view_departements(request) -> JsonResponse:
 def view_publications(request):
    if request.method == 'GET' and request.user.has_perm('Scutopia.view_publications'):
 
-      query_pub_year = request.GET.get('year', None) 
-      query_pub_month = request.GET.get('month', None) 
+      pub_date = request.POST['date']
 
-      if query_pub_year is not None and query_pub_month is not None:
-         publications = [{"eid": x.eid, "authors": [], "title": str(x.title), "publication_date": x.publication_date, "magazine": x.magazine, "volume": x.volume, "page_range": x.page_range, "doi": x.doi, "download_date": x.download_date} for x in models.Publications.objects.filter(publication_date__year = query_pub_year).filter(publication_date__month = query_pub_month)]
-
-      elif query_pub_year is not None:
-         publications = [{"eid": x.eid, "authors": [], "title": str(x.title), "publication_date": x.publication_date, "magazine": x.magazine, "volume": x.volume, "page_range": x.page_range, "doi": x.doi, "download_date": x.download_date} for x in models.Publications.objects.filter(publication_date__year = query_pub_year)]
+      if pub_date:
+         publications = [{"eid": x.eid, "authors": [], "title": str(x.title), "publication_date": x.publication_date, "magazine": x.magazine, "volume": x.volume, "page_range": x.page_range, "doi": x.doi, "download_date": x.download_date} for x in models.Publications.objects.filter(publication_date > pub_date)]
       
       else:
          publications = [{"eid": x.eid, "authors": [], "title": str(x.title), "publication_date": x.publication_date, "magazine": x.magazine, "volume": x.volume, "page_range": x.page_range, "doi": x.doi, "download_date": x.download_date} for x in models.Publications.objects.all()]
@@ -97,25 +93,49 @@ def view_publications(request):
 def view_ssd(request) -> JsonResponse:
    if request.method == 'GET':
       with connection.cursor() as cursor:
-         cursor.execute("""SELECT 
-        `SSD`.`Code` AS `SSD`,
-        (SELECT 
-                COUNT(0)
-            FROM
-                `Professors`
-            WHERE
-                (`Professors`.`SSD` = `SSD`.`Code`)) AS `Docenti`,
-        COUNT(0) AS `Pubblicazioni`
-    FROM
-        ((`SSD`
-        JOIN `Professors` ON ((`SSD`.`Code` = `Professors`.`SSD`)))
-        JOIN `Authorship` ON ((`Authorship`.`Scopus ID` = `Professors`.`Scopus ID`)))
-    GROUP BY `SSD`.`Code`""")
-
-         columns = [col[0] for col in cursor.description]
+         num_professors_query = models.Professors.objects.values("ssd").annotate(ssd_p=F("ssd")).annotate(num_professors = Count("scopus_id")).all().values_list("num_professors", "ssd_p", "scopus_id")
          
-         results = []
-         for row in cursor.fetchall():
-            results.append(dict(zip(columns, row)))
+         data = (
+            models.Authorship.objects.annotate(num_professors = Subquery(num_professors_query.values("num_professors")))
+            .values("scopus_id__ssd", "num_professors")
+            .annotate(num_pubblications = Count("eid"))
+         )
+ 
+#         data = {"SSD": , "Number of proferssors": "", "Number of publications": ""}
+ 
+#         cursor.execute("""select count(Authorship.EID), num_professors
+#                           from Authorship join (
+#                              select `Scopus ID`, count(Professors.`Scopus ID`) as num_professors 
+#                              from Professors group by Professors.`Scopus ID`, Professors.SSD) as P
+#                           on Authorship.`Scopus ID` = P.`Scopus ID`
+#                           group by Authorship.`Scopus ID`;""")
+#
+#         columns = [col[0] for col in cursor.description]
+#         
+#         data = []
+#         for row in cursor.fetchall():
+#            data.append(dict(zip(columns, row)))
+
+#      with connection.cursor() as cursor:
+#         cursor.execute("""SELECT 
+#        `SSD`.`Code` AS `SSD`,
+#        (SELECT 
+#                COUNT(0)
+#            FROM
+#                `Professors`
+#            WHERE
+#                (`Professors`.`SSD` = `SSD`.`Code`)) AS `Docenti`,
+#        COUNT(0) AS `Pubblicazioni`
+#    FROM
+#        ((`SSD`
+#        JOIN `Professors` ON ((`SSD`.`Code` = `Professors`.`SSD`)))
+#        JOIN `Authorship` ON ((`Authorship`.`Scopus ID` = `Professors`.`Scopus ID`)))
+#    GROUP BY `SSD`.`Code`""")
+#
+#         columns = [col[0] for col in cursor.description]
+#         
+#         data = []
+#         for row in cursor.fetchall():
+#            data.append(dict(zip(columns, row)))
                
-   return JsonResponse(results, safe=False)
+   return JsonResponse(data, safe=False)
