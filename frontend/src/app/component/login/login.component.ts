@@ -25,9 +25,11 @@ export class LoginComponent implements OnInit {
 
   public login() {
     console.log(this.loginFormGroup.value);
+
+    let return_message;
     
     this.loginFormGroup.reset();
-    this.loginService.login(this.loginFormGroup.get('username')!.value, this.loginFormGroup.get('password')!.value);
+    this.loginService.login(this.loginFormGroup.get('username')!.value, this.loginFormGroup.get('password')!.value).subscribe(message => console.log(message));
   }
 
 }
