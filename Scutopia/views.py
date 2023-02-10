@@ -59,7 +59,18 @@ def view_departements(request) -> JsonResponse:
 @login_required(login_url='/accounts/login')
 def view_publications(request):
    if request.method == 'GET' and request.user.has_perm('Scutopia.view_publications'):
-      publications = [{"eid": x.eid, "authors": [], "title": str(x.title), "publication_date": x.publication_date, "magazine": x.magazine, "volume": x.volume, "page_range": x.page_range, "doi": x.doi, "download_date": x.download_date} for x in models.Publications.objects.all()]
+
+      query_pub_year = request.GET.get('year', None) 
+      query_pub_month = request.GET.get('month', None) 
+
+      if query_pub_year is not None and query_pub_month is not None:
+         publications = [{"eid": x.eid, "authors": [], "title": str(x.title), "publication_date": x.publication_date, "magazine": x.magazine, "volume": x.volume, "page_range": x.page_range, "doi": x.doi, "download_date": x.download_date} for x in models.Publications.objects.filter(publication_date__year = query_pub_year).filter(publication_date__month = query_pub_month)]
+
+      elif query_pub_year is not None:
+         publications = [{"eid": x.eid, "authors": [], "title": str(x.title), "publication_date": x.publication_date, "magazine": x.magazine, "volume": x.volume, "page_range": x.page_range, "doi": x.doi, "download_date": x.download_date} for x in models.Publications.objects.filter(publication_date__year = query_pub_year)]
+      
+      else:
+         publications = [{"eid": x.eid, "authors": [], "title": str(x.title), "publication_date": x.publication_date, "magazine": x.magazine, "volume": x.volume, "page_range": x.page_range, "doi": x.doi, "download_date": x.download_date} for x in models.Publications.objects.all()]
 
       for p in publications:
          authors = models.Authorship.objects.get(eid=p["eid"])
