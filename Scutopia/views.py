@@ -16,6 +16,7 @@ def view_login(request):
 
    if user is not None:
       login(request, user)
+#      return JsonResponse({"message": "Login Successfull!"})
 
 
 @csrf_exempt
@@ -58,22 +59,26 @@ def view_departements(request) -> JsonResponse:
 @login_required(login_url='/accounts/login')
 def view_publications(request):
    if request.method == 'GET' and request.user.has_perm('Scutopia.view_publications'):
-      publications = models.Publications.objects.all()
-      publications_serializer = serializers.PublicationsSerializer(publications, many=True)
-      return JsonResponse(publications_serializer.data, safe=False)
+      publications = [{"eid": x.eid, "authors": [], "title": str(x.title), "publication_date": x.publication_date, "magazine": x.magazine, "volume": x.volume, "page_range": x.page_range, "doi": x.doi, "download_date": x.download_date} for x in models.Publications.objects.all()]
+
+      for p in publications:
+         authors = models.Authorship.objects.get(eid=p["eid"])
+         p["authors"] = str(authors.scopus_id.scopus_id)
+      
+      return JsonResponse(publications, safe=False)
    
-   elif request.method == 'POST' and request.user.has_perm('Scutopia.add_publications'):
-         publication_data=JSONParser().parse(request)
-         publications_serializer = serializers.PublicationsSerializer(data=publication_data)
+#   elif request.method == 'POST' and request.user.has_perm('Scutopia.add_publications'):
+#         publication_data=JSONParser().parse(request)
+#         publications_serializer = serializers.PublicationsSerializer(data=publication_data)
+#
+#         publication_data['publication_date'] = datetime.strptime(publication_data['publication_date'], '%Y-%m-%d').date()
+#         publication_data['download_date'] = datetime.strptime(publication_data['download_date'], '%Y-%m-%d').date()        
+#
+#         if publications_serializer.is_valid():
+#            publications_serializer.save()
+#            return JsonResponse('Added Successfully!!', safe=False)
 
-         publication_data['publication_date'] = datetime.strptime(publication_data['publication_date'], '%Y-%m-%d').date()
-         publication_data['download_date'] = datetime.strptime(publication_data['download_date'], '%Y-%m-%d').date()        
-
-         if publications_serializer.is_valid():
-            publications_serializer.save()
-            return JsonResponse('Added Successfully!!', safe=False)
-
-         return JsonResponse('Failed to Add.',safe=False)
+#         return JsonResponse('Failed to Add.',safe=False)
 
 
 @csrf_exempt
