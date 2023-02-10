@@ -27,7 +27,7 @@ export class LoginComponent implements OnInit {
     console.log(this.loginFormGroup.value);
     
     this.loginFormGroup.reset();
-    this.loginService.login();
+    this.loginService.login(this.loginFormGroup.get('username')!.value, this.loginFormGroup.get('password')!.value);
   }
 
 }

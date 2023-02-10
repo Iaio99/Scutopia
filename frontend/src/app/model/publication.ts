@@ -2,16 +2,13 @@ import { Author } from "./author";
 
 export interface Publication {
     eid: string;
-    authors: Author[];
+    //authors: Author[];
     title: string;
-    publicationDate: string;
+    pubblicationDate: string;
     magazine: string;
     volume: number;
-    pageRange: {
-        start: number,
-        end: number
-    };
+    page_range: string;
     doi: string;
-    dateGot: Date;
-    scopusID: string;
+    download_date: Date;
+    scopus_id: string;
 }

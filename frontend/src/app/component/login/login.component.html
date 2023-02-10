@@ -1,25 +1,25 @@
 <div id="content" class="flex-row">
-    <div id="form-container" class="flex-column transparency">
-        <form class="flex-column" [formGroup]="loginFormGroup" (ngSubmit)="login()">
-            <mat-form-field class="input-fields">
-              <mat-label>Username</mat-label>
-              <input matInput formControlName="username" required>
-              <mat-error *ngIf="loginFormGroup.controls['username'].touched && loginFormGroup.controls['username'].invalid">
-                <span *ngIf="loginFormGroup.controls['username'].errors!['required']">Campo richiesto.</span>
-              </mat-error>
-            </mat-form-field>
-          
-            <mat-form-field class="input-fields">
-              <mat-label>Password</mat-label>
-              <input matInput type="password" formControlName="password" required>
-              <mat-error *ngIf="loginFormGroup.controls['password'].touched && loginFormGroup.controls['password'].invalid">
-                <span *ngIf="loginFormGroup.controls['password'].errors!['required']">Campo richiesto.</span>
-              </mat-error>
-            </mat-form-field>
+  <div id="form-container" class="flex-column transparency">
+      <form class="flex-column" [formGroup]="loginFormGroup" (ngSubmit)="login()">
+          <mat-form-field class="input-fields">
+            <mat-label>Username</mat-label>
+            <input matInput formControlName="username" required>
+            <mat-error *ngIf="loginFormGroup.controls['username'].touched && loginFormGroup.controls['username'].invalid">
+              <span *ngIf="loginFormGroup.controls['username'].errors!['required']">Campo richiesto.</span>
+            </mat-error>
+          </mat-form-field>
+        
+          <mat-form-field class="input-fields">
+            <mat-label>Password</mat-label>
+            <input matInput type="password" formControlName="password" required>
+            <mat-error *ngIf="loginFormGroup.controls['password'].touched && loginFormGroup.controls['password'].invalid">
+              <span *ngIf="loginFormGroup.controls['password'].errors!['required']">Campo richiesto.</span>
+            </mat-error>
+          </mat-form-field>
 
-            <button type="submit" class="login-button">
-              Login
-            </button>
-          </form>
-    </div>
+          <button type="submit" class="login-button">
+            Login
+          </button>
+        </form>
+  </div>
 </div>

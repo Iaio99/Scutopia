@@ -3,11 +3,11 @@ import { Publication } from 'src/app/model/publication';
 import { PublicationService } from 'src/app/service/publication.service';
 
 @Component({
-  selector: 'app-publications',
-  templateUrl: './publications.component.html',
-  styleUrls: ['./publications.component.css']
+  selector: 'app-publication',
+  templateUrl: './publication.component.html',
+  styleUrls: ['./publication.component.css']
 })
-export class PublicationsComponent implements OnInit {
+export class PublicationComponent implements OnInit {
 
   publications: Publication[] = [];
   displayedColumns: string[] = ['title', 'authors', 'publicationDate', 'doi'];
