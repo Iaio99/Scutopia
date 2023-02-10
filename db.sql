@@ -1,5 +1,5 @@
 -- MySQL dump 10.13  Distrib 8.0.32, for Win64 (x86_64)
----- ------------------------------------------------------
+-- ------------------------------------------------------
 -- Server version	8.0.32
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -21,7 +21,7 @@ DROP TABLE IF EXISTS `ADU`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `ADU` (
-  `Code` tinyint unsigned NOT NULL,
+  `Code` char(2) COLLATE utf8mb4_unicode_ci NOT NULL,
   `Name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`Code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -94,12 +94,11 @@ DROP TABLE IF EXISTS `SC`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `SC` (
-  `Code` char(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `Code` char(12) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `Name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `ADU` tinyint unsigned NOT NULL,
+  `ADU` char(2) COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`Code`),
-  KEY `ADU` (`ADU`),
-  CONSTRAINT `SC_ibfk_1` FOREIGN KEY (`ADU`) REFERENCES `ADU` (`Code`)
+  KEY `ADU` (`ADU`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -113,10 +112,8 @@ DROP TABLE IF EXISTS `SSD`;
 CREATE TABLE `SSD` (
   `Code` char(12) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `Name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `SC` char(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  PRIMARY KEY (`Code`),
-  KEY `SC` (`SC`),
-  CONSTRAINT `SSD_ibfk_1` FOREIGN KEY (`SC`) REFERENCES `SC` (`Code`)
+  `SC` char(12) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`Code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -358,4 +355,4 @@ CREATE TABLE `django_session` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-02-09 23:49:17
+-- Dump completed on 2023-02-10 18:55:37
