@@ -6,9 +6,7 @@ from django.http.response import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
 
-from .models import Professors, Publications
-from .serializers import ProfessorsSerializer, PublicationsSerializer
-
+from . import models, serializers
 
 @csrf_exempt
 def view_login(request):
@@ -35,13 +33,13 @@ def view_adu(request) -> JsonResponse:
 @login_required(login_url='/accounts/login')
 def view_authors(request) -> JsonResponse:
    if request.method == 'GET':
-      professors = Professors.objects.all()
-      professors_serializer = ProfessorsSerializer(professors, many=True)
+      professors = models.Professors.objects.all()
+      professors_serializer = serializers.ProfessorsSerializer(professors, many=True)
       return JsonResponse(professors_serializer.data, safe=False)
    
    elif request.method == 'POST':
          professor_data=JSONParser().parse(request)
-         professors_serializer = ProfessorsSerializer(data=professor_data)
+         professors_serializer = serializers.ProfessorsSerializer(data=professor_data)
 
          if professors_serializer.is_valid():
             professors_serializer.save()
@@ -60,13 +58,13 @@ def view_departements(request) -> JsonResponse:
 @login_required(login_url='/accounts/login')
 def view_publications(request):
    if request.method == 'GET' and request.user.has_perm('Scutopia.view_publications'):
-      publications = Publications.objects.all()
-      publications_serializer = PublicationsSerializer(publications, many=True)
+      publications = models.Publications.objects.all()
+      publications_serializer = serializers.PublicationsSerializer(publications, many=True)
       return JsonResponse(publications_serializer.data, safe=False)
    
    elif request.method == 'POST' and request.user.has_perm('Scutopia.add_publications'):
          publication_data=JSONParser().parse(request)
-         publications_serializer = PublicationsSerializer(data=publication_data)
+         publications_serializer = serializers.PublicationsSerializer(data=publication_data)
 
          publication_data['publication_date'] = datetime.strptime(publication_data['publication_date'], '%Y-%m-%d').date()
          publication_data['download_date'] = datetime.strptime(publication_data['download_date'], '%Y-%m-%d').date()        

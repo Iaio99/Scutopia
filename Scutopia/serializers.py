@@ -1,10 +1,10 @@
 from rest_framework import serializers
-from .models import Professors, Publications
+from . import models
 
 
 class ProfessorsSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Professors
+        model = models.Professors
         fields = ('scopus_id',
                   'cf',
                   'nominative',
@@ -17,7 +17,7 @@ class ProfessorsSerializer(serializers.ModelSerializer):
 
 class PublicationsSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Publications
+        model = models.Publications
         fields = ('eid',
                   'title',
                   'publication_date',
@@ -25,5 +25,4 @@ class PublicationsSerializer(serializers.ModelSerializer):
                   'volume',
                   'page_range',
                   'doi',
-                  'download_date',
-                  'scopus_id')
+                  'download_date')
