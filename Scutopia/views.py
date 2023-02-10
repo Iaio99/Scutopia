@@ -1,5 +1,5 @@
 from datetime import datetime
-
+from django.db import connection
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import permission_required, login_required
 from django.http.response import JsonResponse
@@ -84,4 +84,27 @@ def view_publications(request):
 @csrf_exempt
 @login_required(login_url='/accounts/login')
 def view_ssd(request) -> JsonResponse:
-   return JsonResponse('')
+   if request.method == 'GET':
+      with connection.cursor() as cursor:
+         cursor.execute("""SELECT 
+        `SSD`.`Code` AS `SSD`,
+        (SELECT 
+                COUNT(0)
+            FROM
+                `Professors`
+            WHERE
+                (`Professors`.`SSD` = `SSD`.`Code`)) AS `Docenti`,
+        COUNT(0) AS `Pubblicazioni`
+    FROM
+        ((`SSD`
+        JOIN `Professors` ON ((`SSD`.`Code` = `Professors`.`SSD`)))
+        JOIN `Authorship` ON ((`Authorship`.`Scopus ID` = `Professors`.`Scopus ID`)))
+    GROUP BY `SSD`.`Code`""")
+
+         columns = [col[0] for col in cursor.description]
+         
+         results = []
+         for row in cursor.fetchall():
+            results.append(dict(zip(columns, row)))
+               
+   return JsonResponse(results, safe=False)
