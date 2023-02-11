@@ -68,3 +68,15 @@ class Ssd(models.Model):
     class Meta:
         managed = False
         db_table = 'SSD'
+
+
+class Concat(models.Aggregate):
+    function = 'GROUP_CONCAT'
+    template = '%(function)s(%(distinct)s%(expressions)s)'
+
+    def __init__(self, expression, distinct=False, **extra):
+        super(Concat, self).__init__(
+            expression,
+            distinct='DISTINCT ' if distinct else '',
+            output_field= models.CharField(),
+            **extra)
