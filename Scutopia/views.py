@@ -62,14 +62,24 @@ def view_departements(request) -> JsonResponse:
 def view_publications(request):
    if request.method == 'GET' and request.user.has_perm('Scutopia.view_publications'):
       try:
-         pub_date = request.GET['date']
+         pub_date_gt = request.GET['date_gt']
       except KeyError:
-         pub_date = None
+         pub_date_gt = '0001-1-1'
 
-      publications = models.Authorship.objects.select_related("eid").values("eid").annotate(authors = models.Concat("scopus_id")).values_list("eid", "authors", "eid__publication_date", "eid__title", "eid__magazine", "eid__volume", "eid__page_range", "eid__doi", "eid__download_date")
+      try:
+         pub_date_lt = request.GET['date_lt']
+      except KeyError:
+         pub_date_lt = '9999-1-1'
 
-      if pub_date:
-         publications = publications.filter(scopus_id__publication_date__gt = [datetime.strptime(pub_date, "%Y-%m-%d")])
+      try:
+         ssd = request.GET['ssd']
+      except KeyError:
+         ssd = None
+
+      publications = models.Authorship.objects.select_related("eid").values("eid").annotate(authors = models.Concat("scopus_id")).values_list("eid", "authors", "eid__publication_date", "eid__title", "eid__magazine", "eid__volume", "eid__page_range", "eid__doi", "eid__download_date", "scopus_id__ssd").filter(eid__publication_date__range = [pub_date_gt, pub_date_lt])
+
+      if ssd is not None:
+         publications = publications.filter(scopus_id__ssd = ssd)
       
       return JsonResponse(list(publications), safe=False)
       
