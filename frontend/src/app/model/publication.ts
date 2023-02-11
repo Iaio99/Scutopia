@@ -2,7 +2,7 @@ import { Author } from "./author";
 
 export interface Publication {
     eid: string;
-    //authors: Author[];
+    authors: string;
     title: string;
     pubblicationDate: string;
     magazine: string;
