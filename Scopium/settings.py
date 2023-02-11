@@ -68,10 +68,11 @@ LOGIN_REDIRECT_URL = "http://localhost:4200/publications"
 #LOGIN_REDIRECT_URL = ""
 
 
-CORS_ALLOWED_ORIGINS= [
-    "http://localhost:4200"
-]
-#CORS_ALLOW_CREDENTIALS = False
+#CORS_ALLOWED_ORIGINS= [
+#    "http://localhost:4200"
+#]
+
+CORS_ALLOW_ALL_ORIGINS = True
 
 CORS_ALLOW_HEADERS = list(default_headers) + [  
     'Access-Control-Allow-Origin',
