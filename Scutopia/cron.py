@@ -1,33 +1,17 @@
 import json
 import requests
-from datetime import date
+from datetime import date, datetime
 from os.path import dirname
 from urllib.parse import quote_plus as url_encode
 
 from django_cron import CronJobBase, Schedule
-from django.db.utils import IntegrityError
-from django.db.models import Max
 
-from . import cursor
-from .models import Professors, Authorship
-from .serializers import ProfessorsSerializer,  PublicationsSerializer
-
-
-localhost = "http://localhost:8000/"
+from .db import save_authorship, get_last_download
+from .models import Professors, Authorship, Publications
 
 
 class MaximumRequestsError(Exception):
     "Reached the maximum queries that can be aksed to Scopus"
-
-
-def get_last_download(author_id):
-    args = Authorship.objects.select_related("eid").filter(scopus_id = author_id)
-    download_date = args.aggregate(Max("eid__download_date"))["eid__download_date__max"]
-
-    if args.count:
-        return download_date.strftime("%Y")
-    
-    return 0
 
 
 def get_publications(apikey: str,  author_id: str, index = "scopus", view = "COMPLETE"):
@@ -81,51 +65,40 @@ def get_publications(apikey: str,  author_id: str, index = "scopus", view = "COM
 def save_publications(publication):
     while True:
         try:
-            publications_serializer = PublicationsSerializer(data={
-                "eid": publication["eid"], 
-                "title": publication["dc:title"],
-                "publication_date": publication["prism:coverDate"],
-                "magazine": publication["prism:publicationName"],
-                "volume": publication["prism:volume"],
-                "page_range": publication["prism:pageRange"],
-                "doi": publication["prism:doi"],
-                "download_date": str(date.today()),
-                "scopus_id": publication["dc:identifier"].replace("SCOPUS_ID:", "")})
+            publication = Publications(
+                publication["eid"], 
+                publication["dc:title"],
+                datetime.strptime(publication["prism:coverDate"], "%Y-%m-%d"),
+                publication["prism:publicationName"],
+                publication["prism:volume"],
+                publication["prism:pageRange"],
+                publication["prism:doi"],
+                date.today(),
+            )
 
-            if publications_serializer.is_valid():
-                publications_serializer.save()
-
+            publication.save()
             break
         except KeyError as e:
             new_data = {str(e).replace("'",""): ""}
             publication.update(new_data)
 
 
-def save_authorship(eid: str, authors: list):
-    for author in authors:
-        try:
-            cursor.execute(f"INSERT INTO Authorship (`Scopus ID`, `EID`) VALUES(\"{author['authid']}\", '{eid}');")
-        except IntegrityError:
-            pass
-
 
 class ScopusScraper(CronJobBase):
-    RUN_AT_TIMES = ['13:18']
+    RUN_AT_TIMES = ['21:58']
     RETRY_AFTER_FAILURE_MINS = 1
     schedule = Schedule(run_at_times=RUN_AT_TIMES)
     code = 'Scutopia.ScopusScraper'
 
     def do(self):
-        professors = Professors.objects.all()
-        professors_serializer = ProfessorsSerializer(professors, many=True)
-        authors_id = professors_serializer.data
+        professors = Professors.objects.all().values("scopus_id")
 
         with open(dirname(__file__)+'/../keys.json') as fp:
             keys = json.load(fp)
             APIKEY = keys["apikey"]
         
         try:
-            for author in authors_id:
+            for author in professors:
                 get_last_download(author["scopus_id"])
                 get_publications(APIKEY, author["scopus_id"])
         except MaximumRequestsError as e:
