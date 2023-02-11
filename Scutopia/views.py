@@ -2,11 +2,13 @@ from datetime import datetime
 from django.db import connection
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import permission_required, login_required
+from django.db.models import Count, Subquery, F
 from django.http.response import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
 
 from . import models, serializers
+
 
 @csrf_exempt
 def view_login(request):
@@ -59,34 +61,18 @@ def view_departements(request) -> JsonResponse:
 @login_required(login_url='/accounts/login')
 def view_publications(request):
    if request.method == 'GET' and request.user.has_perm('Scutopia.view_publications'):
+      try:
+         pub_date = request.GET['date']
+      except KeyError:
+         pub_date = None
 
-      pub_date = request.POST['date']
+      publications = models.Authorship.objects.select_related("eid").values("eid").annotate(authors = models.Concat("scopus_id")).values_list("eid", "authors", "eid__publication_date", "eid__title", "eid__magazine", "eid__volume", "eid__page_range", "eid__doi", "eid__download_date")
 
       if pub_date:
-         publications = [{"eid": x.eid, "authors": [], "title": str(x.title), "publication_date": x.publication_date, "magazine": x.magazine, "volume": x.volume, "page_range": x.page_range, "doi": x.doi, "download_date": x.download_date} for x in models.Publications.objects.filter(publication_date > pub_date)]
+         publications = publications.filter(scopus_id__publication_date__gt = [datetime.strptime(pub_date, "%Y-%m-%d")])
       
-      else:
-         publications = [{"eid": x.eid, "authors": [], "title": str(x.title), "publication_date": x.publication_date, "magazine": x.magazine, "volume": x.volume, "page_range": x.page_range, "doi": x.doi, "download_date": x.download_date} for x in models.Publications.objects.all()]
-
-      for p in publications:
-         authors = models.Authorship.objects.get(eid=p["eid"])
-         p["authors"] = str(authors.scopus_id.scopus_id)
+      return JsonResponse(list(publications), safe=False)
       
-      return JsonResponse(publications, safe=False)
-   
-#   elif request.method == 'POST' and request.user.has_perm('Scutopia.add_publications'):
-#         publication_data=JSONParser().parse(request)
-#         publications_serializer = serializers.PublicationsSerializer(data=publication_data)
-#
-#         publication_data['publication_date'] = datetime.strptime(publication_data['publication_date'], '%Y-%m-%d').date()
-#         publication_data['download_date'] = datetime.strptime(publication_data['download_date'], '%Y-%m-%d').date()        
-#
-#         if publications_serializer.is_valid():
-#            publications_serializer.save()
-#            return JsonResponse('Added Successfully!!', safe=False)
-
-#         return JsonResponse('Failed to Add.',safe=False)
-
 
 @csrf_exempt
 @login_required(login_url='/accounts/login')
@@ -100,21 +86,6 @@ def view_ssd(request) -> JsonResponse:
             .values("scopus_id__ssd", "num_professors")
             .annotate(num_pubblications = Count("eid"))
          )
- 
-#         data = {"SSD": , "Number of proferssors": "", "Number of publications": ""}
- 
-#         cursor.execute("""select count(Authorship.EID), num_professors
-#                           from Authorship join (
-#                              select `Scopus ID`, count(Professors.`Scopus ID`) as num_professors 
-#                              from Professors group by Professors.`Scopus ID`, Professors.SSD) as P
-#                           on Authorship.`Scopus ID` = P.`Scopus ID`
-#                           group by Authorship.`Scopus ID`;""")
-#
-#         columns = [col[0] for col in cursor.description]
-#         
-#         data = []
-#         for row in cursor.fetchall():
-#            data.append(dict(zip(columns, row)))
 
 #      with connection.cursor() as cursor:
 #         cursor.execute("""SELECT 
@@ -134,8 +105,6 @@ def view_ssd(request) -> JsonResponse:
 #
 #         columns = [col[0] for col in cursor.description]
 #         
-#         data = []
-#         for row in cursor.fetchall():
-#            data.append(dict(zip(columns, row)))
+#         data = (dict(zip(columns, row)) for row in cursor.fetchall():)
                
-   return JsonResponse(data, safe=False)
+   return JsonResponse(list(data), safe=False)
