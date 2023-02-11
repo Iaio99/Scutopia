@@ -10,5 +10,4 @@ export interface Publication {
     page_range: string;
     doi: string;
     download_date: Date;
-    scopus_id: string;
 }
