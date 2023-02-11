@@ -58,9 +58,9 @@ def view_departements(request) -> JsonResponse:
 
 
 @csrf_exempt
-@login_required(login_url='/accounts/login')
+#@login_required(login_url='/accounts/login')
 def view_publications(request):
-   if request.method == 'GET' and request.user.has_perm('Scutopia.view_publications'):
+   if request.method == 'GET':# and request.user.has_perm('Scutopia.view_publications'):
       try:
          pub_date_gt = request.GET['date_gt']
       except KeyError:
