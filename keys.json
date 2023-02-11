@@ -1,0 +1,4 @@
+{
+    "secretkey": "", # secretkey django
+    "apikey": "" # API Scopus
+}
