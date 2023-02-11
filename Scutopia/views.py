@@ -87,24 +87,26 @@ def view_publications(request):
 @csrf_exempt
 @login_required(login_url='/accounts/login')
 def view_ssd(request) -> JsonResponse:
-   if request.method == 'GET':      
-      try:
-         pub_date_gt = request.GET['date_gt']
-      except KeyError:
-         pub_date_gt = '0001-1-1'
-
-      try:
-         pub_date_lt = request.GET['date_lt']
-      except KeyError:
-         pub_date_lt = '9999-1-1'
-         
-      num_professors_query = models.Professors.objects.values("ssd").annotate(ssd_p=F("ssd")).annotate(num_professors = Count("scopus_id")).all().values_list("num_professors", "ssd_p", "scopus_id")
+   if request.method == 'GET':
+      with connection.cursor() as cursor:
       
-      data = (
-         models.Authorship.objects.annotate(num_professors = Subquery(num_professors_query.values("num_professors")))
-         .values("scopus_id__ssd", "num_professors")
-         .annotate(num_pubblications = Count("eid", filter = Q(eid__publication_date__range = [pub_date_gt, pub_date_lt])))
-      )
+         try:
+            pub_date_gt = request.GET['date_gt']
+         except KeyError:
+            pub_date_gt = '0001-1-1'
+
+         try:
+            pub_date_lt = request.GET['date_lt']
+         except KeyError:
+            pub_date_lt = '9999-1-1'
+
+         num_professors_query = models.Professors.objects.values("ssd").annotate(ssd_p=F("ssd")).annotate(num_professors = Count("scopus_id")).all().values_list("num_professors", "ssd_p", "scopus_id")
+         
+         data = (
+            models.Authorship.objects.annotate(num_professors = Subquery(num_professors_query.values("num_professors")))
+            .values("scopus_id__ssd", "num_professors")
+            .annotate(num_pubblications = Count("eid", filter = Q(eid__publication_date__range = [pub_date_gt, pub_date_lt])))
+         )
 
 #      with connection.cursor() as cursor:
 #         cursor.execute("""SELECT 
