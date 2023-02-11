@@ -1,0 +1,7 @@
+[client]
+database = database_name
+user = username
+password = x
+host = 127.0.0.1
+default-characater-set = utf8
+#rename file in database.cnf
