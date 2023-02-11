@@ -2,7 +2,7 @@ from datetime import datetime
 from django.db import connection
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import permission_required, login_required
-from django.db.models import Count, Subquery, F
+from django.db.models import Count, Subquery, F, Q
 from django.http.response import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
@@ -89,12 +89,23 @@ def view_publications(request):
 def view_ssd(request) -> JsonResponse:
    if request.method == 'GET':
       with connection.cursor() as cursor:
+      
+         try:
+            pub_date_gt = request.GET['date_gt']
+         except KeyError:
+            pub_date_gt = '0001-1-1'
+
+         try:
+            pub_date_lt = request.GET['date_lt']
+         except KeyError:
+            pub_date_lt = '9999-1-1'
+
          num_professors_query = models.Professors.objects.values("ssd").annotate(ssd_p=F("ssd")).annotate(num_professors = Count("scopus_id")).all().values_list("num_professors", "ssd_p", "scopus_id")
          
          data = (
             models.Authorship.objects.annotate(num_professors = Subquery(num_professors_query.values("num_professors")))
             .values("scopus_id__ssd", "num_professors")
-            .annotate(num_pubblications = Count("eid"))
+            .annotate(num_pubblications = Count("eid", filter = Q(eid__publication_date__range = [pub_date_gt, pub_date_lt])))
          )
 
 #      with connection.cursor() as cursor:
