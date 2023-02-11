@@ -2,3 +2,5 @@
     "secretkey": "", # secretkey django
     "apikey": "" # API Scopus
 }
+
+#rename file in keys.json
