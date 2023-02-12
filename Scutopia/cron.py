@@ -29,7 +29,6 @@ def get_publications_scopus(apikey: str, author_id: str, index="scopus", view="C
     query = f"AU-ID({(author_id)}) AND PUBYEAR > {last_downlad}"
 
     url = f"https://api.elsevier.com/content/search/{index}?query={query}&view={view}&apikey={apikey}"
-    print(url)
     r = requests.get(url)
 
     match r.status_code:
