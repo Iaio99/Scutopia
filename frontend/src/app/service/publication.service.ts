@@ -9,7 +9,7 @@ import { of } from 'rxjs';
 })
 export class PublicationService {
 
-  private publicationsURL = 'http://5.75.147.58:80/publications/';
+  private publicationsURL = 'https://5.75.147.58:443/publications/';
 
   constructor(private http: HttpClient) { }
 

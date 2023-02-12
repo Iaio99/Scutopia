@@ -1,3 +1,3 @@
 #!/bin/sh
-
-mkcert -cert-file cert.pem -key-file key.pem localhost 127.0.0.1
+mkcert -install
+mkcert -cert-file cert.pem -key-file key.pem 5.75.147.58 
