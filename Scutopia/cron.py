@@ -1,20 +1,23 @@
-import json
-import requests
+"""Module providingFunction printing python version."""
+
 from datetime import date, datetime
 from os.path import dirname
 from urllib.parse import quote_plus as url_encode
 
+import json
+import requests
+
 from django_cron import CronJobBase, Schedule
 
 from .db import save_authorship, get_last_download
-from .models import Professors, Authorship, Publications
+from .models import Professors, Publications
 
 
 class MaximumRequestsError(Exception):
     "Reached the maximum queries that can be aksed to Scopus"
 
 
-def get_publications(apikey: str,  author_id: str, index = "scopus", view = "COMPLETE"):
+def __get_publications(apikey: str,  author_id: str, index = "scopus", view = "COMPLETE"):
     global reset_time
     reset_time = None
 
@@ -100,6 +103,6 @@ class ScopusScraper(CronJobBase):
         try:
             for author in professors:
                 get_last_download(author["scopus_id"])
-                get_publications(APIKEY, author["scopus_id"])
+                __get_publications(APIKEY, author["scopus_id"])
         except MaximumRequestsError as e:
             print(f"{str(e)}. The counter of requests will be resetted in date {str(date.fromtimestamp(reset_time))}")
