@@ -1,5 +1,7 @@
 """Module providingFunction printing python version."""
 
+from datetime import datetime, date
+
 from django.db import connection
 from django.db.utils import IntegrityError
 from django.db.models import Count, Max, Subquery, Q
@@ -8,6 +10,27 @@ from . import models
 
 
 cursor = connection.cursor()
+
+
+def save_publications(publication):
+    while True:
+        try:
+            publication = models.Publications(
+                publication["eid"], 
+                publication["dc:title"],
+                datetime.strptime(publication["prism:coverDate"], "%Y-%m-%d"),
+                publication["prism:publicationName"],
+                publication["prism:volume"],
+                publication["prism:pageRange"],
+                publication["prism:doi"],
+                date.today(),
+            )
+
+            publication.save()
+            break
+        except KeyError as e:
+            new_data = {str(e).replace("'",""): ""}
+            publication.update(new_data)
 
 
 def save_authorship(eid: str, authors: list):

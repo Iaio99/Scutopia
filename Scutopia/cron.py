@@ -1,6 +1,5 @@
 """Module providingFunction printing python version."""
 
-from datetime import date, datetime
 from os.path import dirname
 #from urllib.parse import quote_plus as url_encode
 
@@ -9,18 +8,27 @@ import requests
 
 from django_cron import CronJobBase, Schedule
 
-from .db import save_authorship, get_last_download
-from .models import Professors, Publications
+from .db import save_authorship, get_last_download, save_publications
+from .models import Professors
+
+
+RESET_TIME = None
+
 
 
 class MaximumRequestsError(Exception):
-    "Reached the maximum queries that can be aksed to Scopus"
+    def __init__(self, reset_time):
+        self.__reset_time = reset_time
+
+    def __str__(self):
+        return "Reached the maximum queries that can be aksed to Scopus"
+
+    @property
+    def reset_time(self):
+        return self.__reset_time
 
 
 def get_publications_scopus(apikey: str, author_id: str, index="scopus", view="COMPLETE"):
-    global RESET_TIME
-    RESET_TIME = None
-
     last_downlad = get_last_download(author_id)
     query = f"AU-ID({(author_id)}) AND PUBYEAR > {last_downlad}"
 
@@ -62,32 +70,9 @@ def get_publications_scopus(apikey: str, author_id: str, index="scopus", view="C
         case 406:
             raise Exception("Invalid Mime Type")
         case 429:
-            RESET_TIME = int(r.headers["X-RateLimit-Reset"])
-            raise MaximumRequestsError
+            raise MaximumRequestsError(int(r.headers["X-RateLimit-Reset"]))
         case 500:
             raise Exception("Generic Error")
-
-
-def save_publications(publication):
-    while True:
-        try:
-            publication = Publications(
-                publication["eid"], 
-                publication["dc:title"],
-                datetime.strptime(publication["prism:coverDate"], "%Y-%m-%d"),
-                publication["prism:publicationName"],
-                publication["prism:volume"],
-                publication["prism:pageRange"],
-                publication["prism:doi"],
-                date.today(),
-            )
-
-            publication.save()
-            break
-        except KeyError as e:
-            new_data = {str(e).replace("'",""): ""}
-            publication.update(new_data)
-
 
 
 class ScopusScraper(CronJobBase):
@@ -99,7 +84,7 @@ class ScopusScraper(CronJobBase):
     def do(self):
         professors = Professors.objects.all().values("scopus_id")
 
-        with open(dirname(__file__)+'/../keys.json') as fp:
+        with open(dirname(__file__)+"/../keys.json", "r") as fp:
             keys = json.load(fp)
             apikey = keys["apikey"]
 
@@ -108,4 +93,4 @@ class ScopusScraper(CronJobBase):
                 get_last_download(author["scopus_id"])
                 get_publications_scopus(apikey, author["scopus_id"])
         except MaximumRequestsError as e:
-            print(f"{str(e)}. The counter of requests will be resetted in date {str(date.fromtimestamp(RESET_TIME))}")
+            print(f"{str(e)}. The counter of requests will be resetted in date {e.reset_time}")
