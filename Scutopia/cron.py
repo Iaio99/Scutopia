@@ -12,10 +12,6 @@ from .db import save_authorship, get_last_download, save_publications
 from .models import Professors
 
 
-RESET_TIME = None
-
-
-
 class MaximumRequestsError(Exception):
     def __init__(self, reset_time):
         self.__reset_time = reset_time
