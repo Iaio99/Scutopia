@@ -74,7 +74,6 @@ def get_publications(pub_date_gt, pub_date_lt, ssd):
     return publications
 
 
-
 def get_ssd_data_from_date_range(pub_date_gt, pub_date_lt):
     professors_query = models.Professors.objects.annotate(
         num_professors = Count("scopus_id")).values_list("num_professors", "ssd", "scopus_id")
