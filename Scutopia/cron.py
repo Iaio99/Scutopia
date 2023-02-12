@@ -2,7 +2,7 @@
 
 from datetime import date, datetime
 from os.path import dirname
-from urllib.parse import quote_plus as url_encode
+#from urllib.parse import quote_plus as url_encode
 
 import json
 import requests
@@ -17,14 +17,17 @@ class MaximumRequestsError(Exception):
     "Reached the maximum queries that can be aksed to Scopus"
 
 
-def __get_publications(apikey: str,  author_id: str, index = "scopus", view = "COMPLETE"):
-    global reset_time
-    reset_time = None
+def get_publications_scopus(apikey: str, author_id: str, index="scopus", view="COMPLETE"):
+    global RESET_TIME
+    RESET_TIME = None
 
-    url = "https://api.elsevier.com/content/search/" + index + "?query={}&view=" + view + "&apikey=" + apikey
-    url = url.format(f"AU-ID({url_encode(author_id)}) AND PUBYEAR > {get_last_download(author_id)}")
+    last_downlad = get_last_download(author_id)
+    query = f"AU-ID({(author_id)}) AND PUBYEAR > {last_downlad}"
+
+    url = f"https://api.elsevier.com/content/search/{index}?query={query}&view={view}&apikey={apikey}"
+    print(url)
     r = requests.get(url)
-    
+
     match r.status_code:
         case 200:
             api_response = json.loads(r.text)
@@ -59,10 +62,10 @@ def __get_publications(apikey: str,  author_id: str, index = "scopus", view = "C
         case 406:
             raise Exception("Invalid Mime Type")
         case 429:
-            reset_time = int(r.headers["X-RateLimit-Reset"])
-            raise MaximumRequestsError      
+            RESET_TIME = int(r.headers["X-RateLimit-Reset"])
+            raise MaximumRequestsError
         case 500:
-            raise Exception("Generic Error")  
+            raise Exception("Generic Error")
 
 
 def save_publications(publication):
@@ -88,7 +91,7 @@ def save_publications(publication):
 
 
 class ScopusScraper(CronJobBase):
-    RUN_AT_TIMES = ['21:58']
+    RUN_AT_TIMES = ['01:20']
     RETRY_AFTER_FAILURE_MINS = 1
     schedule = Schedule(run_at_times=RUN_AT_TIMES)
     code = 'Scutopia.ScopusScraper'
@@ -98,11 +101,11 @@ class ScopusScraper(CronJobBase):
 
         with open(dirname(__file__)+'/../keys.json') as fp:
             keys = json.load(fp)
-            APIKEY = keys["apikey"]
-        
+            apikey = keys["apikey"]
+
         try:
             for author in professors:
                 get_last_download(author["scopus_id"])
-                __get_publications(APIKEY, author["scopus_id"])
+                get_publications_scopus(apikey, author["scopus_id"])
         except MaximumRequestsError as e:
-            print(f"{str(e)}. The counter of requests will be resetted in date {str(date.fromtimestamp(reset_time))}")
+            print(f"{str(e)}. The counter of requests will be resetted in date {str(date.fromtimestamp(RESET_TIME))}")
