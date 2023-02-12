@@ -9,7 +9,7 @@ import { LoginMessage } from '../login-message';
 })
 export class LoginService {
 
-  private loginURL = "http://localhost:8000/accounts/login/";
+  private loginURL = "https://localhost:8000/accounts/login/";
 
   constructor(private http: HttpClient) { }
 
