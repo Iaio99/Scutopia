@@ -15,9 +15,6 @@ export class DjangoCSRFInterceptor implements HttpInterceptor {
             req = req.clone({ headers: req.headers.set(cookieheaderName, csrfToken) });
         }
 
-        req = req.clone({ headers: req.headers.set("Access-Control-Allow-Origin", "*")});
-        req = req.clone({ headers: req.headers.set("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept")});
-
         return next.handle(req);
     }
 }
