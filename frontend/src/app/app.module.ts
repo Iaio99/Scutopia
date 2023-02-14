@@ -32,8 +32,8 @@ import { DjangoCSRFInterceptor } from './django-csrfinterceptor';
     ReactiveFormsModule,
     HttpClientModule,
     HttpClientXsrfModule.withOptions({
-      cookieName: 'My-Xsrf-Cookie',
-      headerName: 'My-Xsrf-Header',
+      cookieName: 'csrftoken',
+      headerName: 'X-CSRFToken',
     }),
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: DjangoCSRFInterceptor, multi: true }

@@ -9,11 +9,11 @@ import { LoginMessage } from '../login-message';
 })
 export class LoginService {
 
-  private loginURL = "https://5.75.147.58:8000/accounts/login/";
+  private loginURL = "//api/accounts/login/";
 
   constructor(private http: HttpClient) { }
 
-  public login(username: string, password: string) {
+  public login(username: string, password: string)  {
     return this.http.post(this.loginURL, {username: username, password: password})
 //    {"message": "Login Successfull!"}
   }

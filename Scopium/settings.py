@@ -68,18 +68,22 @@ MIDDLEWARE = [
 LOGIN_REDIRECT_URL = "http://localhost:4200/publications"
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://5.75.147.58"
+    "https://5.75.147.58",
+    "https://localhost:4200",
+    "http://localhost:4200",
+    "5.75.147.58"
 ]
 
-CSRF_USE_SESSIONS = False
-CSRF_COOKIE_HTTPONLY = False 
-#CSRF_COOKIE_NAME = 'XSRF-TOKEN'
-#CSRF_HEADER_NAME = 'HTTP_X_XSRF_TOKEN'
+CSRF_USE_SESSIONS = True
+CSRF_COOKIE_PATH = '/'
+#CSRF_COOKIE_HTTPONLY = True 
+CSRF_COOKIE_NAME = 'csrftoken'
+CSRF_HEADER_NAME = 'X-CSRFToken'
 CSRF_COOKIE_SECURE = True
-CSRF_COOKIE_DOMAIN = "5.75.147.58"
+#CSRF_COOKIE_DOMAIN = "5.75.147.58"
 
 #CORS_ALLOW_ALL_ORIGINS = True
-CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_CREDENTIALS = False
 
 CORS_ALLOWED_ORIGINS= [
     "https://localhost:4200",
@@ -172,6 +176,7 @@ CRON_CLASSES = [
 
 SECURE_SSL_REDIRECT = True
 SESSION_COOKIE_SECURE = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO','https')
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/

@@ -3,15 +3,14 @@
 from django.contrib.auth import authenticate, login, logout
 #from django.contrib.auth.decorators import permission_required, login_required
 from django.http.response import JsonResponse
-from django.views.decorators.csrf import csrf_exempt, csrf_protect, ensure_csrf_cookie
+from django.views.decorators.csrf import csrf_exempt, csrf_protect, ensure_csrf_cookie, requires_csrf_token
 from rest_framework.parsers import JSONParser
 
 from . import db
 from . import models
 from .serializers import ProfessorsSerializer
 
-
-@ensure_csrf_cookie
+@csrf_exempt
 def view_login(request):
    username = request.POST['username']
    password = request.POST['password']

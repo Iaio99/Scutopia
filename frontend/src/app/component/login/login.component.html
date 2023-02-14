@@ -1,6 +1,7 @@
 <div id="content" class="flex-row">
   <div id="form-container" class="flex-column transparency">
-      <form class="flex-column" [formGroup]="loginFormGroup" (ngSubmit)="login()">
+
+<form method='POST' class="flex-column" [formGroup]="loginFormGroup" (ngSubmit)="login()">{% csrf_token %}
           <mat-form-field class="input-fields">
             <mat-label>Username</mat-label>
             <input matInput formControlName="username" required>
@@ -23,3 +24,6 @@
         </form>
   </div>
 </div>
+<script>
+const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+</script>
