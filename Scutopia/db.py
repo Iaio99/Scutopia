@@ -33,14 +33,11 @@ def save_publications(publication):
             publication.update(new_data)
 
 
-def save_authorship(eid: str, authors: list):
-    for author in authors:
-        try:
-            cursor.execute(f"\
-                INSERT INTO Authorship (`Scopus ID`, `EID`) VALUES(\"{author['authid']}\", '{eid}');\
-            ")
-        except IntegrityError:
-            pass
+def save_authorship(eid: str, author: str):
+    try:
+        models.Authorship(author, eid).save(force_insert = True)
+    except IntegrityError:
+        pass
 
 
 def get_last_download(author_id):
