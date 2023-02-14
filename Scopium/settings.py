@@ -71,7 +71,7 @@ CSRF_TRUSTED_ORIGINS = [
     "https://5.75.147.58",
     "https://localhost:4200",
     "http://localhost:4200",
-    "5.75.147.58"
+    "http://5.75.147.58"
 ]
 
 CSRF_USE_SESSIONS = True
