@@ -3,7 +3,7 @@
 from django.contrib.auth import authenticate, login, logout
 #from django.contrib.auth.decorators import permission_required, login_required
 from django.http.response import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.csrf import csrf_exempt, csrf_protect, ensure_csrf_cookie
 from rest_framework.parsers import JSONParser
 
 from . import db
@@ -11,7 +11,7 @@ from . import models
 from .serializers import ProfessorsSerializer
 
 
-@csrf_exempt
+@ensure_csrf_cookie
 def view_login(request):
    username = request.POST['username']
    password = request.POST['password']
@@ -58,7 +58,7 @@ def view_departements(request) -> JsonResponse:
    return JsonResponse('')
 
 
-@csrf_exempt
+@csrf_protect
 #@login_required(login_url='/accounts/login')
 def view_publications(request):
    if request.method == 'GET':# and request.user.has_perm('Scutopia.view_publications'):

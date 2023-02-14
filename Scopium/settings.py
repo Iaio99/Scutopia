@@ -62,19 +62,30 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
 ]
 
 LOGIN_REDIRECT_URL = "http://localhost:4200/publications"
-#LOGIN_REDIRECT_URL = ""
 
+CSRF_TRUSTED_ORIGINS = [
+    "https://5.75.147.58"
+]
+
+CSRF_USE_SESSIONS = False
+CSRF_COOKIE_HTTPONLY = False 
+#CSRF_COOKIE_NAME = 'XSRF-TOKEN'
+#CSRF_HEADER_NAME = 'HTTP_X_XSRF_TOKEN'
+CSRF_COOKIE_SECURE = True
+CSRF_COOKIE_DOMAIN = "5.75.147.58"
+
+#CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOWED_ORIGINS= [
     "https://localhost:4200",
     "https://5.75.147.58:4200",
     "https://127.0.0.1:4200"
 ]
-
-#CORS_ALLOW_ALL_ORIGINS = True
 
 CORS_ALLOW_HEADERS = list(default_headers) + [  
     'Access-Control-Allow-Origin',
@@ -89,7 +100,6 @@ CORS_ALLOW_METHODS = [
     "POST",
     "PUT",
 ]
-
 
 ROOT_URLCONF = 'Scopium.urls'
 
@@ -162,7 +172,6 @@ CRON_CLASSES = [
 
 SECURE_SSL_REDIRECT = True
 SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
