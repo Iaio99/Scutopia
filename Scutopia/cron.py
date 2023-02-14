@@ -52,7 +52,7 @@ def get_publications_scopus(apikey: str, author_id: str, index="scopus", view="C
 
             for publication in result_set:
                 save_publications(publication)
-                save_authorship(publication["eid"], publication["author"])
+                save_authorship(publication["eid"], author_id)
 
         case 400:
             raise Exception("Invalid Request")
