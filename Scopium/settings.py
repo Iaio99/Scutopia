@@ -58,14 +58,14 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    #'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
+    'Scutopia.middleware.DisableCSRF',
 ]
 
-LOGIN_REDIRECT_URL = "http://localhost:4200/publications"
+LOGIN_REDIRECT_URL = "https://5.75.147.58/publications"
 
 CSRF_TRUSTED_ORIGINS = [
     "https://5.75.147.58",
