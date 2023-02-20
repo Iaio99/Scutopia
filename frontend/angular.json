@@ -67,6 +67,10 @@
               "browserTarget": "scutopia:build:development"
             }
           },
+          "options": {
+            "sslKey": "../key.pem",
+            "sslCert": "../cert.pem"
+          },
           "defaultConfiguration": "development"
         },
         "extract-i18n": {
