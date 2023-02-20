@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { catchError, EMPTY } from 'rxjs';
 import { LoginService } from 'src/app/service/login.service';
 
 @Component({
@@ -27,7 +28,17 @@ export class LoginComponent implements OnInit {
     console.log(this.loginFormGroup.value);
     
     this.loginFormGroup.reset();
-    this.loginService.login(this.loginFormGroup.get('username')!.value, this.loginFormGroup.get('password')!.value).subscribe(message => console.log(message));
+    this.loginService.login(
+      this.loginFormGroup.get('username')!.value,
+      this.loginFormGroup.get('password')!.value)
+      .pipe(
+        catchError ((err) => {
+          console.error("Login error");
+          console.error(err);
+          return EMPTY;
+        })
+      )
+    .subscribe(message => console.log(message));
   }
 
 }
