@@ -12,7 +12,7 @@ export class LoginComponent implements OnInit {
 
   loginFormGroup: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, private loginService: LoginService) {
+  constructor(private formBuilder: FormBuilder, private loginService: LoginService, private router: Router) {
 
     this.loginFormGroup = this.formBuilder.nonNullable.group({
       username: [null, Validators.required],
@@ -31,14 +31,10 @@ export class LoginComponent implements OnInit {
     this.loginService.login(
       this.loginFormGroup.get('username')!.value,
       this.loginFormGroup.get('password')!.value)
-      .pipe(
-        catchError ((err) => {
-          console.error("Login error");
-          console.error(err);
-          return EMPTY;
-        })
-      )
-    .subscribe(message => console.log(message));
+    .subscribe({
+      next: () => this.router.navigate(['publications']),
+      error: () =>         alert('Error al Conectar Datos ')
+  });
   }
 
 }
