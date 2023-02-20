@@ -8,13 +8,13 @@ export class DjangoCSRFInterceptor implements HttpInterceptor {
     constructor(private tokenExtractor: HttpXsrfTokenExtractor) {}
 
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-        let csrfToken = (
-            document.querySelector('[name=csrfmiddlewaretoken]') as HTMLInputElement
-          ).value;
+        // let csrfToken = (
+        //     document.querySelector('[name=csrfmiddlewaretoken]') as HTMLInputElement
+        //   ).value;
 
     
-            req = req.clone({ setHeaders: {'X-CSRFToken': csrfToken }});
-            console.log(`HTTP: Adding CSRF`);
+        //     req = req.clone({ setHeaders: {'X-CSRFToken': csrfToken }});
+        //     console.log(`HTTP: Adding CSRF`);
 
         return next.handle(req);
     }
