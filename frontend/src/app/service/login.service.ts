@@ -14,7 +14,7 @@ export class LoginService {
   constructor(private http: HttpClient) { }
 
   public login(username: string, password: string)  {
-    return this.http.post(this.loginURL, {username: username, password: password})
+    return this.http.post(this.loginURL, {"username": username, "password": password})
 //    {"message": "Login Successfull!"}
   }
 }
