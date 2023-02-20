@@ -176,8 +176,6 @@ CRON_CLASSES = [
 
 SECURE_SSL_REDIRECT = True
 SESSION_COOKIE_SECURE = True
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO','https')
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
