@@ -17,7 +17,7 @@ export class PublicationComponent implements OnInit {
   ngOnInit(): void {
     this.publicationService.getPublications()
       .subscribe(publications => {
-        publications.forEach(publication => this.publications.push(publication));
+        this.publications = publications;
       });
   }  
 
