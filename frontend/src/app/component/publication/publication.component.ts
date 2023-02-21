@@ -18,8 +18,8 @@ export class PublicationComponent implements OnInit {
     this.publicationService.getPublications()
       .subscribe(publications => {
         this.publications = publications;
+        console.log(this.publications);
       });
-      console.log(this.publications);
   }  
 
 }
