@@ -11,14 +11,15 @@
         <ng-container matColumnDef="authors">
             <th mat-header-cell *matHeaderCellDef> Autori </th>
             <td mat-cell *matCellDef="let publication">
-                <span *ngFor="let author of publication.authors">
+                {{publication.authors}}
+                <!-- <span *ngFor="let author of publication.authors">
                     {{publication.authors}} 
-                </span>
+                </span> -->
             </td>
         </ng-container>
 
         <!-- Publication date name Column -->
-        <ng-container matColumnDef="publicationDate">
+        <ng-container matColumnDef="publication_date">
             <th mat-header-cell *matHeaderCellDef> Data di pubblicazione </th>
             <td mat-cell *matCellDef="let publication"> {{publication.publicationDate}} </td>
         </ng-container>
