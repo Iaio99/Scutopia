@@ -58,7 +58,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    #'django.middleware.csrf.CsrfViewMiddleware',
+#    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -74,16 +74,16 @@ CSRF_TRUSTED_ORIGINS = [
     "http://5.75.147.58"
 ]
 
-CSRF_USE_SESSIONS = True
-CSRF_COOKIE_PATH = '/'
-#CSRF_COOKIE_HTTPONLY = True 
-CSRF_COOKIE_NAME = 'csrftoken'
-CSRF_HEADER_NAME = 'X-CSRFToken'
-CSRF_COOKIE_SECURE = True
+#CSRF_USE_SESSIONS = True
+#CSRF_COOKIE_PATH = '/'
+#CSRF_COOKIE_HTTPONLY = True
+#CSRF_COOKIE_NAME = 'csrftoken'
+#CSRF_HEADER_NAME = 'X-CSRFToken'
+#CSRF_COOKIE_SECURE = True
 #CSRF_COOKIE_DOMAIN = "5.75.147.58"
 
 #CORS_ALLOW_ALL_ORIGINS = True
-CORS_ALLOW_CREDENTIALS = False
+CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOWED_ORIGINS= [
     "https://localhost:4200",
@@ -176,6 +176,7 @@ CRON_CLASSES = [
 
 SECURE_SSL_REDIRECT = True
 SESSION_COOKIE_SECURE = True
+#CSRF_COOKIE_SECURE = True
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
