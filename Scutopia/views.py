@@ -20,9 +20,7 @@ def view_login(request):
 
    if user is not None:
       login(request, user)
-      return JsonResponse({"message": "Login Successfull!"})
-return JsonResponse({"message": "Login Successfull!"})
-
+#      return JsonResponse({"message": "Login Successfull!"})
 
 
 @csrf_exempt
