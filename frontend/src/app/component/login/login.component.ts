@@ -33,7 +33,7 @@ export class LoginComponent implements OnInit {
       this.loginFormGroup.get('password')!.value)
     .subscribe({
       next: () => this.router.navigate(['publications']),
-      error: () => alert('Error al Conectar Datos ')
+      error: () => alert('Errore')
   });
   }
 
