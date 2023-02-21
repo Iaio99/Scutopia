@@ -27,7 +27,7 @@ export class LoginComponent implements OnInit {
   public login() {
     console.log(this.loginFormGroup.value);
     
-    this.loginFormGroup.reset();
+  
     this.loginService.login(
       this.loginFormGroup.get('username')!.value,
       this.loginFormGroup.get('password')!.value)
@@ -35,6 +35,7 @@ export class LoginComponent implements OnInit {
       next: () => this.router.navigate(['publications']),
       error: () => alert('Errore')
   });
+  this.loginFormGroup.reset();
   }
 
 }
