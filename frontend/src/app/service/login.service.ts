@@ -16,7 +16,7 @@ export class LoginService {
   public login(username: string, password: string): Observable<any>  {
     console.log(username);
     console.log(password);
-    return this.http.post(this.loginURL, {username: username, password: password})
+    return this.http.post(this.loginURL, [{"username": username, "password": password}])
 //    {"message": "Login Successfull!"}
   }
 }

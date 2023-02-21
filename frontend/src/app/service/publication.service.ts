@@ -2,14 +2,13 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Publication } from '../model/publication';
-import { of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PublicationService {
 
-  private publicationsURL = 'https://5.75.147.58/api/publications/';
+  private publicationsURL = '//5.75.147.58/api/publications/';
 
   constructor(private http: HttpClient) { }
 

@@ -4,7 +4,7 @@ export interface Publication {
     eid: string;
     authors: string;
     title: string;
-    pubblicationDate: string;
+    pubblicationDate: Date;
     magazine: string;
     volume: number;
     page_range: string;
