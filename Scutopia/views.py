@@ -2,7 +2,7 @@
 
 from django.contrib.auth import authenticate, login, logout
 #from django.contrib.auth.decorators import permission_required, login_required
-from django.http.response import JsonResponse
+from django.http.response import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt, csrf_protect, ensure_csrf_cookie, requires_csrf_token
 from rest_framework.parsers import JSONParser
 from django.shortcuts import render, redirect
@@ -20,7 +20,7 @@ def view_login(request):
 
    if user is not None:
       login(request, user)
-#      return JsonResponse({"message": "Login Successfull!"})
+      return HttpResponse()
 
 
 @csrf_exempt
