@@ -5,9 +5,11 @@ from django.contrib.auth import authenticate, login, logout
 from django.http.response import JsonResponse
 from django.views.decorators.csrf import csrf_exempt, csrf_protect, ensure_csrf_cookie, requires_csrf_token
 from rest_framework.parsers import JSONParser
+from django.shortcuts import render, redirect
 
 from . import db
 from . import models
+from . import forms
 from .serializers import ProfessorsSerializer
 
 @csrf_exempt
@@ -19,6 +21,8 @@ def view_login(request):
    if user is not None:
       login(request, user)
       return JsonResponse({"message": "Login Successfull!"})
+return JsonResponse({"message": "Login Successfull!"})
+
 
 
 @csrf_exempt
@@ -98,3 +102,17 @@ def view_ssd(request) -> JsonResponse:
         data = db.get_ssd_data_from_date_range(pub_date_gt, pub_date_lt)
 
         return JsonResponse(list(data), safe=False)
+
+@csrf_exempt
+#@login_required(login_url='/accounts/login')
+def add_professor(request):
+   if request.method == 'POST':  
+      form = forms.professor_form(request.POST)
+
+      if form.is_valid():
+        form.save(commit=True)
+        return redirect('/api/accounts/login')
+   else:
+      form = forms.professor_form() 
+
+   return render(request, 'insert_professor.html', {'prop_form': forms.professor_form})
