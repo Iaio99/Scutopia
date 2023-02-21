@@ -17,6 +17,7 @@ export class PublicationComponent implements OnInit {
   ngOnInit(): void {
     this.publicationService.getPublications()
       .subscribe(publications => {
+        console.log(publications);
         this.publications = publications;
       });
   }  
