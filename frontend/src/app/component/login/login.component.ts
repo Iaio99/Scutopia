@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { catchError, EMPTY } from 'rxjs';
+import { Router } from '@angular/router';
 import { LoginService } from 'src/app/service/login.service';
 
 @Component({
@@ -33,7 +33,7 @@ export class LoginComponent implements OnInit {
       this.loginFormGroup.get('password')!.value)
     .subscribe({
       next: () => this.router.navigate(['publications']),
-      error: () =>         alert('Error al Conectar Datos ')
+      error: () => alert('Error al Conectar Datos ')
   });
   }
 
