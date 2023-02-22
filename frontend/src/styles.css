@@ -20,3 +20,24 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .transparency {
     background-color: transparent;
 }
+
+.dashboard {
+    width: 100%;
+    height: auto;
+    display: inline-flex;
+    flex-flow: row nowrap;
+    justify-content: space-evenly;
+    align-items: center;
+
+    padding: 15px;
+    background-color: white;
+}
+
+.dashboard-link {
+    text-decoration: none;
+    padding: 15px;
+}
+
+.dashboard-link:hover {
+    cursor: pointer;
+}
