@@ -1,5 +1,5 @@
 <div id="table-container">
-    <table mat-table #table *ngIf="publications" [dataSource]="publications" class="mat-elevation-z8" id="publication-table">
+    <table mat-table #table *ngIf="publications.length>0" [dataSource]="publications" class="mat-elevation-z8" id="publication-table">
 
         <!-- Publication name Column -->
         <ng-container matColumnDef="title">
