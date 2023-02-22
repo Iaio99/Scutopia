@@ -1,3 +1,9 @@
+<nav id="dashboard">
+    <a [routerLink]="['publications']" class="dashboard-link">Pubblicazioni</a>
+    <a [routerLink]="['ssd']" class="dashboard-link">SSD</a>
+    <a [routerLink]="['author']" class="dashboard-link">Autori</a>
+    <a href="https://5.75.147.58/api/insert-professor/" class="dashboard-link">Inserisci professori</a>
+</nav>
 <div id="table-container">
     <table mat-table #table *ngIf="publications.length>0" [dataSource]="publications" class="mat-elevation-z8" id="publication-table">
 

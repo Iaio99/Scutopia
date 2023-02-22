@@ -36,10 +36,9 @@ export class LoginComponent implements OnInit {
       this.loginFormGroup.get('username')!.value,
       this.loginFormGroup.get('password')!.value)
     .subscribe({
-      next: (res) => {
-        sessionStorage.setItem('sessionId', res.headers.get['sessionId']);
+      next: () => 
         this.router.navigate(['publications'], {relativeTo: this.route})
-      },
+      ,
       error: (err) => alert(err)
     });
   this.loginFormGroup.reset();
