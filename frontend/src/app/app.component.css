@@ -1,0 +1,20 @@
+#dashboard {
+    width: 100%;
+    height: auto;
+    display: inline-flex;
+    flex-flow: row nowrap;
+    justify-content: flex-start;
+    align-items: center;
+
+    padding: 15px;
+    background-color: white;
+}
+
+.dashboard-link {
+    text-decoration: none;
+    
+}
+
+.dashboard-link:hover {
+    cursor: pointer;
+}

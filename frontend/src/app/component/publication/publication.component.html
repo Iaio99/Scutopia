@@ -24,24 +24,25 @@
             <td mat-cell *matCellDef="let publication"> {{publication.eid__publication_date}} </td>
         </ng-container>
 
-        <!-- DOI date name Column -->
+        <!-- Title date name Column -->
         <ng-container matColumnDef="title">
             <th mat-header-cell *matHeaderCellDef> Titolo </th>
             <td mat-cell *matCellDef="let publication"> {{publication.eid__title}} </td>
         </ng-container>
 
+        <!-- Magazine name Column -->
         <ng-container matColumnDef="magazine">
             <th mat-header-cell *matHeaderCellDef> Rivista </th>
             <td mat-cell *matCellDef="let publication"> {{publication.eid__magazine}} </td>
         </ng-container>
 
-        <!-- DOI date name Column -->
+        <!-- Volume name Column -->
         <ng-container matColumnDef="volume">
             <th mat-header-cell *matHeaderCellDef> Volume </th>
             <td mat-cell *matCellDef="let publication"> {{publication.eid__volume}} </td>
         </ng-container>
 
-
+        <!-- Page range name Column -->
         <ng-container matColumnDef="page_range">
             <th mat-header-cell *matHeaderCellDef> Pagine </th>
             <td mat-cell *matCellDef="let publication"> {{publication.eid__page_range}} </td>
@@ -50,8 +51,15 @@
         <!-- DOI date name Column -->
         <ng-container matColumnDef="doi">
             <th mat-header-cell *matHeaderCellDef> DOI </th>
-            <a [href]="publication.eid__doi" target="_blank">DOI</a>
+            <td mat-cell *matCellDef="let publication">
+                <a [href]="publication.eid__doi" target="_blank">DOI</a>
             </td>
+        </ng-container>
+
+        <!-- Download date name Column -->
+        <ng-container matColumnDef="download_date">
+            <th mat-header-cell *matHeaderCellDef> DOI </th>
+            <td mat-cell *matCellDef="let publication">{{publication.eid__download_date}}</td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
