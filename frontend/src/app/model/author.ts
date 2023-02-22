@@ -1,7 +1,10 @@
 export interface Author {
-
-    id: number; // Needed?
-    firstName: string;
-    lastName: string;
-    department: string;
+    scopus_id: string
+    cf: string
+    nominative: string
+    registration_number: string
+    ssd: string
+    department: string
+    hire_date: string
+    role: string
 }

@@ -1,0 +1,74 @@
+<div id="table-container">
+    <table mat-table [dataSource]="authors" class="mat-elevation-z8" id="author-table">
+
+        <!-- Publication name Column -->
+        <ng-container matColumnDef="scopus_id">
+            <th mat-header-cell *matHeaderCellDef> Scopus ID </th>
+            <td mat-cell *matCellDef="let author"> {{author.scopus_id}} </td>
+        </ng-container>
+
+        <!-- Authors name Column -->
+        <ng-container matColumnDef="cf">
+            <th mat-header-cell *matHeaderCellDef> CF </th>
+            <td mat-cell *matCellDef="let author">
+                {{author.cf}}
+                <!-- <span *ngFor="let author of author.authors">
+                    {{author.authors}} 
+                </span> -->
+            </td>
+        </ng-container>
+
+        <!-- Publication date name Column -->
+        <ng-container matColumnDef="nominative">
+            <th mat-header-cell *matHeaderCellDef> Nominativo </th>
+            <td mat-cell *matCellDef="let author">
+                {{author.nominative}}
+            </td>
+        </ng-container>
+
+        <!-- Publication name Column -->
+        <ng-container matColumnDef="registration_number">
+            <th mat-header-cell *matHeaderCellDef> Matricola </th>
+            <td mat-cell *matCellDef="let author"> {{author.registration_number}} </td>
+        </ng-container>
+
+        <!-- Authors name Column -->
+        <ng-container matColumnDef="ssd">
+            <th mat-header-cell *matHeaderCellDef> SSD </th>
+            <td mat-cell *matCellDef="let author">
+                {{author.ssd}}
+                <!-- <span *ngFor="let author of author.authors">
+                    {{author.authors}} 
+                </span> -->
+            </td>
+        </ng-container>
+
+        <!-- Publication date name Column -->
+        <ng-container matColumnDef="department">
+            <th mat-header-cell *matHeaderCellDef> Dipartimento </th>
+            <td mat-cell *matCellDef="let author">
+                {{author.department}}
+            </td>
+        </ng-container>
+
+        <!-- Publication name Column -->
+        <ng-container matColumnDef="hire_date">
+            <th mat-header-cell *matHeaderCellDef> Data di assunzione </th>
+            <td mat-cell *matCellDef="let author"> {{author.hire_date}} </td>
+        </ng-container>
+
+        <!-- Authors name Column -->
+        <ng-container matColumnDef="role">
+            <th mat-header-cell *matHeaderCellDef> Ruolo </th>
+            <td mat-cell *matCellDef="let author">
+                {{author.role}}
+                <!-- <span *ngFor="let author of author.authors">
+                    {{author.authors}} 
+                </span> -->
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+</div>

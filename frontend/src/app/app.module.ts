@@ -15,13 +15,15 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HttpClientXsrfModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { DjangoCSRFInterceptor } from './django-csrfinterceptor';
 import { SsdComponent } from './component/ssd/ssd.component';
+import { AuthorComponent } from './component/author/author.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     PublicationComponent,
-    SsdComponent
+    SsdComponent,
+    AuthorComponent
   ],
   imports: [
     BrowserModule,
