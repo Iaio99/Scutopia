@@ -18,7 +18,8 @@ export class PublicationComponent implements OnInit {
     this.publicationService.getPublications()
       .subscribe(publications => {
         publications.forEach(
-          publication => (
+          publication => {
+            console.log(publication);
             this.publications.push(
               {
                 eid: publication[0],
@@ -32,8 +33,9 @@ export class PublicationComponent implements OnInit {
                 eid__download_date: publication[8],
                 scopus_id__ssd: publication[9]
               } as Publication
-            )
-          )
+            );
+            console.log(publications);
+            }
         )
       });
   }  
