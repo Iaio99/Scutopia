@@ -14,7 +14,7 @@ import { MatInputModule } from '@angular/material/input';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HttpClientXsrfModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { DjangoCSRFInterceptor } from './django-csrfinterceptor';
-import { SsdComponent } from './service/ssd/ssd.component';
+import { SsdComponent } from './component/ssd/ssd.component';
 
 @NgModule({
   declarations: [

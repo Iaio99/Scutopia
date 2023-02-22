@@ -12,7 +12,7 @@ export class PublicationService {
 
   constructor(private http: HttpClient) { }
 
-  public getPublications(): Observable<Publication[]> {
-    return this.http.get<Publication[]>(this.publicationsURL);
+  public getPublications(): Observable<Array<Array<any>>> {
+    return this.http.get<Array<Array<any>>>(this.publicationsURL);
   }
 }
