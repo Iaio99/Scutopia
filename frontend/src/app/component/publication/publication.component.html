@@ -4,7 +4,7 @@
         <!-- Publication name Column -->
         <ng-container matColumnDef="title">
             <th mat-header-cell *matHeaderCellDef> Nome </th>
-            <td mat-cell *matCellDef="let publication"> {{publication.title}} </td>
+            <td mat-cell *matCellDef="let publication"> {{publication.eid__title}} </td>
         </ng-container>
 
         <!-- Authors name Column -->
@@ -21,14 +21,14 @@
         <!-- Publication date name Column -->
         <ng-container matColumnDef="publication_date">
             <th mat-header-cell *matHeaderCellDef> Data di pubblicazione </th>
-            <td mat-cell *matCellDef="let publication"> {{publication.publicationDate}} </td>
+            <td mat-cell *matCellDef="let publication"> {{publication.eid__publication_date}} </td>
         </ng-container>
 
         <!-- DOI date name Column -->
         <ng-container matColumnDef="doi">
             <th mat-header-cell *matHeaderCellDef> DOI </th>
             <td mat-cell *matCellDef="let publication">
-                <a [href]="publication.doi" target="_blank">DOI</a>
+                <a [href]="publication.eid__doi" target="_blank">DOI</a>
             </td>
         </ng-container>
 
