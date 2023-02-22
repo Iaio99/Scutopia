@@ -1,14 +1,152 @@
 <!DOCTYPE html>
+{% load static %}
+<style>
+  #form-container {
+    width: 40vw;
+    height: fit-content;
+    padding: 0 30px;
+
+    position: relative;
+    margin: auto 0;
+}
+#content {
+    width: 100%;
+    height: 100%;
+
+    background: rgb(248,199,204);
+    background: linear-gradient(90deg, rgba(248,199,204,1) 0%, rgba(127,255,212,1) 100%); 
+}
+#form-container form {
+    width: 100%;
+    height: fit-content;
+}
+#id_scopus_id {
+  width: 30vw;
+    height: auto;
+
+    position: relative;
+    margin: 10px auto;
+}
+#id_cf {
+  width: 30vw;
+    height: auto;
+
+    position: relative;
+    margin: 10px auto;
+}
+#id_nominative {
+  width: 30vw;
+    height: auto;
+
+    position: relative;
+    margin: 10px auto;
+}
+#id_registration_number {
+  width: 30vw;
+    height: auto;
+
+    position: relative;
+    margin: 10px auto;
+}
+#id_ssd {
+  width: 30vw;
+    height: auto;
+
+    position: relative;
+    margin: 10px auto;
+}
+#id_department {
+  width: 30vw;
+    height: auto;
+
+    position: relative;
+    margin: 10px auto;
+}
+#id_hire_date {
+  width: 30vw;
+    height: auto;
+
+    position: relative;
+    margin: 10px auto;
+}
+#id_role {
+  width: 30vw;
+    height: auto;
+
+    position: relative;
+    margin: 10px auto;
+}
+.login-button {
+    width: fit-content;
+    height: fit-content;
+
+    border-radius: 15px;
+    border: 1px solid #0E0F19;
+    background-color: transparent;
+
+    position: relative;
+    margin: 0 auto;
+    padding: 10px 30px;
+
+    font-size: 1.5rem;
+    color: #0E0F19;
+}
+.sub {
+    width: fit-content;
+    height: fit-content;
+
+    border-radius: 15px;
+    border: 1px solid #0E0F19;
+    background-color: transparent;
+
+    position: relative;
+    margin: 0 auto;
+    padding: 10px 30px;
+
+    font-size: 1.5rem;
+    color: #0E0F19;
+}
+.flex-column {
+    display:flex;
+    flex-flow:column nowrap;
+    justify-content: center;
+    align-items: center;
+}
+.sub:hover {
+    background-color: #0E0F19;
+    border-color: #0E0F19;
+    color: white;
+}
+.input-fields {
+    width: 30vw;
+    height: auto;
+
+    position: relative;
+    margin: 10px auto;
+}
+
+</style>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <link rel="stylesheet" href="{% static 'Scutopia/templates/insert_professor.css' %}">
   <title>Scutopia | Insert professor</title>
 </head>
 <body>
-    <form action="/api/insert-professor/" method="post">
-        {{ prop_form }}
-
-        <input type="submit" value="Submit" />
+  <div id="content" class="flex-row">
+    <div id="form-container" class="flex-column transparency">
+      <form action="/api/insert-professor/" method="post" class="flex-column">
+        {% for field in prop_form %}
+        <div class="input-fields">
+            <label class="input-fields">{{ field.label }}</label>
+            {{ field }}
+        </div>
+    {% endfor %}       
       </form>
+      <button type="submit" class="sub">
+        Submit
+      </button>
+    </div>
+  </div>
 </body>
 </html>

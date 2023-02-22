@@ -103,7 +103,6 @@ def view_ssd(request) -> JsonResponse:
 
         return JsonResponse(list(data), safe=False)
 
-
 @csrf_exempt
 #@login_required(login_url='/accounts/login')
 def add_professor(request):

@@ -1,0 +1,120 @@
+#id_scopus_id {
+    width: fit-content;
+    height: fit-content;
+
+    border-radius: 15px;
+    border: 1px solid #0E0F19;
+    background-color: transparent;
+
+    position: relative;
+    margin: 0 auto;
+    padding: 10px 30px;
+
+    font-size: 1.5rem;
+    color: #0E0F19;
+}
+#id_cf {
+    width: fit-content;
+    height: fit-content;
+
+    border-radius: 15px;
+    border: 1px solid #0E0F19;
+    background-color: transparent;
+
+    position: relative;
+    margin: 0 auto;
+    padding: 10px 30px;
+
+    font-size: 1.5rem;
+    color: #0E0F19;
+}
+#id_nominative {
+    width: fit-content;
+    height: fit-content;
+
+    border-radius: 15px;
+    border: 1px solid #0E0F19;
+    background-color: transparent;
+
+    position: relative;
+    margin: 0 auto;
+    padding: 10px 30px;
+
+    font-size: 1.5rem;
+    color: #0E0F19;
+}
+#id_registration_number {
+    width: fit-content;
+    height: fit-content;
+
+    border-radius: 15px;
+    border: 1px solid #0E0F19;
+    background-color: transparent;
+
+    position: relative;
+    margin: 0 auto;
+    padding: 10px 30px;
+
+    font-size: 1.5rem;
+    color: #0E0F19;
+}
+#id_ssd {
+    width: fit-content;
+    height: fit-content;
+
+    border-radius: 15px;
+    border: 1px solid #0E0F19;
+    background-color: transparent;
+
+    position: relative;
+    margin: 0 auto;
+    padding: 10px 30px;
+
+    font-size: 1.5rem;
+    color: #0E0F19;
+}
+#id_department {
+    width: fit-content;
+    height: fit-content;
+
+    border-radius: 15px;
+    border: 1px solid #0E0F19;
+    background-color: transparent;
+
+    position: relative;
+    margin: 0 auto;
+    padding: 10px 30px;
+
+    font-size: 1.5rem;
+    color: #0E0F19;
+}
+#id_hire_date {
+    width: fit-content;
+    height: fit-content;
+
+    border-radius: 15px;
+    border: 1px solid #0E0F19;
+    background-color: transparent;
+
+    position: relative;
+    margin: 0 auto;
+    padding: 10px 30px;
+
+    font-size: 1.5rem;
+    color: #0E0F19;
+}
+#id_role {
+    width: fit-content;
+    height: fit-content;
+
+    border-radius: 15px;
+    border: 1px solid #0E0F19;
+    background-color: transparent;
+
+    position: relative;
+    margin: 0 auto;
+    padding: 10px 30px;
+
+    font-size: 1.5rem;
+    color: #0E0F19;
+}
