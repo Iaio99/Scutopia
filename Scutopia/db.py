@@ -79,7 +79,7 @@ def get_ssd_data_from_date_range(pub_date_gt, pub_date_lt):
         models.Authorship.objects.annotate(num_professors =
         Subquery(professors_query.values("num_professors")[:1]))
         .values("scopus_id__ssd", "num_professors")
-        .annotate(num_pubblications = Count("eid", filter =
+        .annotate(num_publications = Count("eid", filter =
         Q(eid__publication_date__range = [pub_date_gt, pub_date_lt])))
     )
 
