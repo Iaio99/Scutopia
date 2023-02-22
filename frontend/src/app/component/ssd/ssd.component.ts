@@ -8,7 +8,7 @@ import { SsdService } from 'src/app/service/ssd.service';
 })
 export class SsdComponent {
   ssds: Ssd[] = [];
-  displayedColumns: string[] = ['ssd', 'num_professors', 'scopus_id'];
+  displayedColumns: string[] = ['ssd', 'num_professors', 'num_publications'];
 
   constructor(private SsdService: SsdService) {}
 
