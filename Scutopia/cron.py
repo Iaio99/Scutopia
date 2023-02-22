@@ -29,7 +29,8 @@ def get_publications_scopus(apikey: str, author_id: str, index="scopus", view="C
     query = f"AU-ID({(author_id)}) AND PUBYEAR > {last_downlad}"
 
     url = f"https://api.elsevier.com/content/search/{index}?query={query}&view={view}&apikey={apikey}"
-    r = requests.get(url)
+    r = requests.get(url, proxies=dict(http='socks5://127.0.0.1:6969',
+                                 https='socks5://127.0.0.1:6969'))
 
     match r.status_code:
         case 200:
@@ -46,7 +47,8 @@ def get_publications_scopus(apikey: str, author_id: str, index="scopus", view="C
                     if e['@ref'] == 'next':
                         next_url = e['@href']
 
-                r = requests.get(next_url)
+                r = requests.get(next_url, proxies=dict(http='socks5://127.0.0.1:6969',
+                                 https='socks5://127.0.0.1:6969'))
                 api_response = json.loads(r.text)
                 result_set += api_response["search-results"]["entry"]
 
