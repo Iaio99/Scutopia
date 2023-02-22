@@ -1,4 +1,4 @@
-from django.forms import CharField, ModelForm
+from django.forms import ModelForm #CharField, ModelFom
 from .models import Professors
 
 class professor_form(ModelForm):

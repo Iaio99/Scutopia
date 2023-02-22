@@ -79,7 +79,7 @@ class ScopusScraper(CronJobBase):
     def do(self):
         professors = Professors.objects.all().values("scopus_id")
 
-        with open(dirname(__file__)+"/../keys.json", "r") as fp:
+        with open(dirname(__file__)+"/../keys.json", "r", encoding="UTF-8") as fp:
             keys = json.load(fp)
             apikey = keys["apikey"]
 
