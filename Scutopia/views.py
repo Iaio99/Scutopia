@@ -6,12 +6,15 @@ from django.http.response import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render, redirect
 from rest_framework.parsers import JSONParser
+import json
+from os.path import dirname
 
 
 from . import db
 from . import models
 from . import forms
 from .serializers import ProfessorsSerializer
+from .cron import get_publications_scopus
 
 
 @csrf_exempt
@@ -111,6 +114,10 @@ def add_professor(request):
 
         if form.is_valid():
             form.save(commit=True)
+            with open(dirname(__file__)+"/../keys.json", "r", encoding="UTF-8") as fp:
+                keys = json.load(fp)
+                apikey = keys["apikey"]
+            get_publications_scopus(apikey, form.cleaned_data['scopus_id'])
             return redirect('/api/accounts/login')
     else:
         form = forms.professor_form()
