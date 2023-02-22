@@ -8,7 +8,7 @@ import { Author } from '../model/author';
 })
 export class AuthorService {
 
-  private authorsURL = '//5.75.147.58/api/authors/';
+  private authorsURL = '//localhost:8000/api/authors/';
 
   constructor(private http: HttpClient) { }
 

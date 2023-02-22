@@ -10,7 +10,7 @@ import { Ssd } from '../model/ssd';
 
 export class SsdService {
 
-  private ssdsURL = '//5.75.147.58/api/ssd/';
+  private ssdsURL = '//localhost:8000/api/ssd/';
 
   constructor(private http: HttpClient) { }
 
