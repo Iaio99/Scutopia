@@ -37,7 +37,7 @@ export class LoginComponent implements OnInit {
       this.loginFormGroup.get('password')!.value)
     .subscribe({
       next: () => 
-        this.router.navigate(['publications'], {relativeTo: this.route})
+        this.router.navigate(['/publications'], {relativeTo: this.route})
       ,
       error: (err) => alert(err)
     });
