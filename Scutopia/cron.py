@@ -10,6 +10,8 @@ from django_cron import CronJobBase, Schedule
 
 from .db import save_authorship, get_last_download, save_publications
 from .models import Professors
+import logging
+log = logging.getLogger(__name__)
 
 
 class MaximumRequestsError(Exception):
