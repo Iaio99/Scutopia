@@ -1,0 +1,18 @@
+Funzionalità:
+Aggiunta delle viste ADU e Dipartimento
+Modifica delle viste autori
+Inserire nel frontend i filtri per data in tutte le viste e per ssd all'interno della vista Pubblicazioni
+Aggiunta del campo 'Autori' nella tabella Pubblicazioni (e relativa aggiunta nella vista)
+Aggiunta dell'ordinamento delle entry nelle viste (crescente e decrescente)
+Modifica della vista pubblicazioni (montare i dati nella vista in modo che risulti come una classica pubblicazione mostrata nelle specifiche)
+Scegliere il tema per il css
+Spostare la dashboard di lato
+L'inserimento degli autori deve prevedere di poter caricare un file csv
+
+
+Backend:
+Far girare angular e Django IN LOCALE
+Risoluzione di CSRF e CORS (perché devono girare in locale)
+Far funzionare il Login
+Merge di view_authors e insert_professor in views.py
+Far funzionare la vpn
