@@ -81,7 +81,7 @@ def view_publications(request):
 
       publications = db.get_publications(pub_date_gt, pub_date_lt, ssd)
       
-      return JsonResponse(dict(publications), safe=False)
+      return JsonResponse(list(publications), safe=False)
       
 
 @csrf_exempt
