@@ -10,7 +10,7 @@ import { PublicationService } from 'src/app/service/publication.service';
 export class PublicationComponent implements OnInit {
 
   publications: Publication[] = [];
-  displayedColumns: string[] = ['title', 'authors', 'publication_date', 'doi'];
+  displayedColumns: string[] = ['eid', 'authors', 'publication_date', 'title', 'magazine', 'volume', 'page_range', 'doi'];
 
   constructor(private publicationService: PublicationService) {}
 
