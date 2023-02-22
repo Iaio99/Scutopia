@@ -13,6 +13,7 @@ export class PublicationService {
   constructor(private http: HttpClient) { }
 
   public getPublications(): Observable<Array<Array<any>>> {
+    console.info("Retrieving data...");
     return this.http.get<Array<Array<any>>>(this.publicationsURL);
   }
 }
