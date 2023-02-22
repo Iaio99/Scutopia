@@ -27,7 +27,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 #SECRET_KEY = 'django-insecure-6x9!f0rgz(bg1e@kb!^=rmlk%86e(792dp_5!gunqkqy1#9epn'
 
-with open(os.path.dirname(__file__)+'/../keys.json') as fp:
+with open(os.path.dirname(__file__)+'/../keys.json', encoding="UTF-8") as fp:
     keys = json.load(fp)
     SECRET_KEY = keys["secretkey"]
 
@@ -91,7 +91,7 @@ CORS_ALLOWED_ORIGINS= [
     "https://127.0.0.1:4200"
 ]
 
-CORS_ALLOW_HEADERS = list(default_headers) + [  
+CORS_ALLOW_HEADERS = list(default_headers) + [
     'Access-Control-Allow-Origin',
     'Access-Control-Allow-Headers'
 ]
@@ -169,7 +169,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # Cronjobs
-# Run python manage.py crontab add 
+# Run python manage.py crontab add
 CRON_CLASSES = [
     "Scutopia.cron.ScopusScraper",
 ]
