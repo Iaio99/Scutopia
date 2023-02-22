@@ -1,1 +1,30 @@
-<p>ssd works!</p>
+<div id="table-container">
+    <table mat-table [dataSource]="ssd" class="mat-elevation-z8" id="ssd-table">
+
+        <!-- Publication name Column -->
+        <ng-container matColumnDef="title">
+            <th mat-header-cell *matHeaderCellDef> SSD </th>
+            <td mat-cell *matCellDef="let ssd"> {{ssd.ssd}} </td>
+        </ng-container>
+
+        <!-- Authors name Column -->
+        <ng-container matColumnDef="authors">
+            <th mat-header-cell *matHeaderCellDef> Numero Professori </th>
+            <td mat-cell *matCellDef="let ssd">
+                {{ssd.num_professors}}
+                <!-- <span *ngFor="let author of ssd.authors">
+                    {{ssd.authors}} 
+                </span> -->
+            </td>
+        </ng-container>
+
+        <!-- Publication date name Column
+        <ng-container matColumnDef="ssd_date">
+            <th mat-header-cell *matHeaderCellDef> Data di pubblicazione </th>
+            <td mat-cell *matCellDef="let ssd"> {{ssd.ssdDate}} </td>
+        </ng-container> -->
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+</div>
