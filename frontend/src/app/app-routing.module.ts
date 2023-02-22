@@ -20,7 +20,7 @@ const routes: Routes = [
     path: 'ssd', component: SsdComponent
   },
   {
-    path: 'author', component: AuthorComponent
+    path: 'authors', component: AuthorComponent
   }
 ];
 
