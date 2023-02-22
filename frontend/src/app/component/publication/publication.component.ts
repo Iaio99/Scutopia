@@ -35,7 +35,7 @@ export class PublicationComponent implements OnInit {
                 scopus_id__ssd: publication[9]
               } as Publication
             );
-            console.log(publications);
+            console.log(this.publications);
             }
         )
       });
