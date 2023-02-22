@@ -32,7 +32,7 @@ export class PublicationComponent implements OnInit {
                 eid__page_range: publication[6],
                 eid__doi: publication[7],
                 eid__download_date: publication[8],
-                scopus_id__ssd: publication[9]
+                scopus_id__ssd: "https://doi.org/"+publication[9]
               } as Publication
             );
             console.log(this.publications);
