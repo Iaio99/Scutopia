@@ -1,0 +1,3 @@
+ng g c component/nome-component
+ng g i model/nome-interface
+ng g s service/nome-servizio
