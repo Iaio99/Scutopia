@@ -14,8 +14,6 @@ import json
 import os
 from pathlib import Path
 
-from corsheaders.defaults import default_headers
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -48,13 +46,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_cron',
     'django_extensions',
-    'corsheaders',
     'rest_framework',
     'Scutopia.apps.ScutopiaConfig',
 ]
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -81,29 +77,6 @@ LOGIN_REDIRECT_URL = "https://5.75.147.58/publications"
 #CSRF_HEADER_NAME = 'X-CSRFToken'
 #CSRF_COOKIE_SECURE = True
 #CSRF_COOKIE_DOMAIN = "5.75.147.58"
-
-#CORS_ALLOW_ALL_ORIGINS = True
-#CORS_ALLOW_CREDENTIALS = True
-
-#CORS_ALLOWED_ORIGINS= [
-#    "https://localhost:4200",
-#    "https://5.75.147.58:4200",
-#    "https://127.0.0.1:4200"
-#]
-
-#CORS_ALLOW_HEADERS = list(default_headers) + [
-#    'Access-Control-Allow-Origin',
-#    'Access-Control-Allow-Headers'
-#]
-
-#CORS_ALLOW_METHODS = [
-#    "DELETE",
-#    "GET",
-#    "OPTIONS",
-#    "PATCH",
-#    "POST",
-#    "PUT",
-#]
 
 ROOT_URLCONF = 'Scopium.urls'
 
