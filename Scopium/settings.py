@@ -58,21 +58,21 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-#    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'Scutopia.middleware.DisableCSRF',
+#    'Scutopia.middleware.DisableCSRF',
 ]
 
 LOGIN_REDIRECT_URL = "https://5.75.147.58/publications"
 
-CSRF_TRUSTED_ORIGINS = [
-    "https://5.75.147.58",
-    "https://localhost:4200",
-    "http://localhost:4200",
-    "http://5.75.147.58"
-]
+#CSRF_TRUSTED_ORIGINS = [
+#    "https://5.75.147.58",
+#    "https://localhost:4200",
+#    "http://localhost:4200",
+#    "http://5.75.147.58"
+#]
 
 #CSRF_USE_SESSIONS = True
 #CSRF_COOKIE_PATH = '/'
@@ -83,27 +83,27 @@ CSRF_TRUSTED_ORIGINS = [
 #CSRF_COOKIE_DOMAIN = "5.75.147.58"
 
 #CORS_ALLOW_ALL_ORIGINS = True
-CORS_ALLOW_CREDENTIALS = True
+#CORS_ALLOW_CREDENTIALS = True
 
-CORS_ALLOWED_ORIGINS= [
-    "https://localhost:4200",
-    "https://5.75.147.58:4200",
-    "https://127.0.0.1:4200"
-]
+#CORS_ALLOWED_ORIGINS= [
+#    "https://localhost:4200",
+#    "https://5.75.147.58:4200",
+#    "https://127.0.0.1:4200"
+#]
 
-CORS_ALLOW_HEADERS = list(default_headers) + [
-    'Access-Control-Allow-Origin',
-    'Access-Control-Allow-Headers'
-]
+#CORS_ALLOW_HEADERS = list(default_headers) + [
+#    'Access-Control-Allow-Origin',
+#    'Access-Control-Allow-Headers'
+#]
 
-CORS_ALLOW_METHODS = [
-    "DELETE",
-    "GET",
-    "OPTIONS",
-    "PATCH",
-    "POST",
-    "PUT",
-]
+#CORS_ALLOW_METHODS = [
+#    "DELETE",
+#    "GET",
+#    "OPTIONS",
+#    "PATCH",
+#    "POST",
+#    "PUT",
+#]
 
 ROOT_URLCONF = 'Scopium.urls'
 
