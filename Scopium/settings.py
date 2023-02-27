@@ -61,7 +61,7 @@ MIDDLEWARE = [
 #    'Scutopia.middleware.DisableCSRF',
 ]
 
-LOGIN_REDIRECT_URL = "https://5.75.147.58/publications"
+LOGIN_REDIRECT_URL = None
 
 #CSRF_TRUSTED_ORIGINS = [
 #    "https://5.75.147.58",
